@@ -1,0 +1,25 @@
+{
+    "extends": [
+      "eslint:recommended",
+      "plugin:vue/vue3-recommended",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+    "no-unused-vars": "warn",   
+    "no-console": "warn",       
+    "eqeqeq": "error",          
+    "curly": "error",           
+    "no-multi-spaces": "error", 
+    "semi": ["error", "always"],  
+    "quotes": ["error", "single"], 
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,        
+        "semi": true              
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/ban-ts-comment": "warn"
+  }
+  }

@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: santa
+  profiles:
+    active: ${SPIRNG_ENV:local}

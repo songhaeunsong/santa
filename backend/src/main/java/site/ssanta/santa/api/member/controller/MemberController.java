@@ -1,6 +1,5 @@
 package site.ssanta.santa.api.member.controller;
 
-import io.jsonwebtoken.JwtException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,13 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import site.ssanta.santa.api.member.dto.*;
 import site.ssanta.santa.api.member.service.OauthService;
 import site.ssanta.santa.api.member.service.MemberService;
-import site.ssanta.santa.common.jwt.JWTErrorCode;
+import site.ssanta.santa.common.jwt.exception.AuthCodeMissingException;
+import site.ssanta.santa.common.jwt.exception.JWTErrorCode;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
-@Tag(name="User API", description = "User API")
+@Tag(name = "User API", description = "User API")
 public class MemberController {
 
     private final OauthService oauthService;
@@ -46,9 +46,9 @@ public class MemberController {
 
             @ApiResponse(responseCode = "400", description = "코드가 누락된 경우")
     })
-    public ResponseEntity<?> signIn(@RequestBody(required = false) LoginRequestDto dto) {
-        if (dto == null || dto.getCode() == null) {
-            return ResponseEntity.badRequest().body("잘못된 요청입니다.");
+    public ResponseEntity<?> signIn(@RequestBody LoginRequestDto dto) {
+        if (dto.getCode() == null) {
+            throw new AuthCodeMissingException(JWTErrorCode.ERR_MISSING_AUTHORIZATION_CODE.toString());
         }
 
         log.debug("code: {}", dto.getCode());
@@ -81,25 +81,13 @@ public class MemberController {
                 .body(result.getIsNew());
     }
 
-    @GetMapping("/info")
+    @GetMapping("/mypage")
     @Tag(name = "사용자 정보 조회", description = "Token을 이용한 사용자 정보 조회(미완성)")
     public ResponseEntity<?> getUserInfo(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String token) {
-        if (token == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        
         log.debug("token: {}", token);
-        try {
-            VerifyTokenResponseDto response = memberService.getNickname(token);
-            return ResponseEntity.ok().body(response);
-        } catch (JwtException e) {
-            if (e.getMessage().equals(JWTErrorCode.INVALID_TOKEN.getMessage())) {
-                return ResponseEntity.notFound().build();
-            }
-
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        VerifyTokenResponseDto response = memberService.getNickname(token);
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/reissue")
@@ -111,15 +99,8 @@ public class MemberController {
         }
 
         log.debug("token: {}", token);
-        try {
-            ReIssueTokenDto response = memberService.reissueToken(token);
-            return ResponseEntity.ok().body(response);
-        } catch (JwtException e) {
-            if (e.getMessage().equals(JWTErrorCode.INVALID_TOKEN.getMessage())) {
-                return ResponseEntity.notFound().build();
-            }
-
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        ReIssueTokenDto response = memberService.reissueToken(token);
+        return ResponseEntity.ok().body(response);
     }
 }
+

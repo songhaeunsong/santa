@@ -6,14 +6,14 @@ import site.ssanta.santa.api.member.domain.Member;
 import site.ssanta.santa.api.member.domain.Tier;
 import site.ssanta.santa.api.member.dto.*;
 import site.ssanta.santa.api.member.repository.MemberRepository;
-import site.ssanta.santa.common.jwt.JWTUtil;
+import site.ssanta.santa.common.jwt.JwtUtil;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     public LoginResponseDto getToken(KakaoUserInfoResponseDto userInfo) {
         boolean isNew = !isUser(userInfo.getId());

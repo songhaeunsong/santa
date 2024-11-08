@@ -1,6 +1,7 @@
 package site.ssanta.santa.common.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -15,10 +16,16 @@ import org.springframework.context.annotation.Configuration;
         version = "v1.0.0")
 )
 @SecurityScheme(
-        name = "JWT",
-        type= SecuritySchemeType.HTTP,
-        bearerFormat = "JWT",
-        scheme = "bearer"
+        name = "ACCESS",
+        type= SecuritySchemeType.APIKEY,
+        in = SecuritySchemeIn.COOKIE,
+        paramName = "access_token"
+)
+@SecurityScheme(
+        name = "REFRESH",
+        type= SecuritySchemeType.APIKEY,
+        in = SecuritySchemeIn.COOKIE,
+        paramName = "refresh_token"
 )
 @Configuration
 @RequiredArgsConstructor

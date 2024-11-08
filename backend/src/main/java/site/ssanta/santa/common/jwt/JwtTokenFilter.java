@@ -26,7 +26,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private static final String ACCESS_TOKEN = "access_token";
     private static final List<String> EXCLUDE_URL = Arrays.asList(new String[]{
-            "/member/auth"
+            "/member/auth",
+            "/member/reissue",
+            "/member/check-nickname"
     });
 
     private final JwtUtil jwtUtil;

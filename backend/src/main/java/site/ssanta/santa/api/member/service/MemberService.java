@@ -53,8 +53,8 @@ public class MemberService {
         return memberRepository.existsById(id);
     }
 
-    public String reissueToken(Long userId) {
-        return jwtUtil.reissue(userId);
+    public String reissueToken(String token) {
+        return jwtUtil.reissue(token);
     }
 
     public void setNickname(Long userId, SetNicknameDto dto) {
@@ -64,12 +64,12 @@ public class MemberService {
         find.updateNickname(dto.getNickname());
     }
 
-    public UserInfoVO getUserInfo(Long userId) {
-        return memberRepository.findByIdProjectsBy(userId);
+    public MemberInfoVO getUserInfo(Long userId) {
+        return memberRepository.findProjectsById(userId);
     }
 
     public CheckNicknameResponseDto checkNickname(String nickname) {
-        boolean result = memberRepository.exitsByNickname(nickname);
+        boolean result = memberRepository.existsMemberByNicknameEqualsIgnoreCase(nickname);
         return new CheckNicknameResponseDto(result);
     }
 }

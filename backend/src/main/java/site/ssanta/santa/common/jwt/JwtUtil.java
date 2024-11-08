@@ -87,7 +87,19 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String reissue(Long id) {
-        return generateToken(String.valueOf(id), "ACCESS", ACCESS_TOKEN_EXPIRE_TIME);
+    public String reissue(String token) {
+        try {
+            String id = Jwts.parser()
+                    .verifyWith(getSign())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .getSubject();
+            return generateToken(id, "ACCESS", ACCESS_TOKEN_EXPIRE_TIME);
+        } catch (ExpiredJwtException e) {
+            throw new JwtExpiredException(HttpStatus.UNAUTHORIZED.toString());
+        } catch (JwtException e) {
+            throw new InvalidJwtTokenException(HttpStatus.BAD_REQUEST.toString());
+        }
     }
 }

@@ -2,7 +2,7 @@ package site.ssanta.santa.api.member.dto;
 
 import site.ssanta.santa.api.member.domain.Tier;
 
-public interface UserInfoVO {
+public interface MemberInfoVO {
 
     String getEmail();
     String getNickname();

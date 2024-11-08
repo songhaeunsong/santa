@@ -2,11 +2,17 @@ package site.ssanta.santa.api.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import site.ssanta.santa.api.member.domain.Member;
 import site.ssanta.santa.api.member.domain.Tier;
 import site.ssanta.santa.api.member.dto.*;
 import site.ssanta.santa.api.member.repository.MemberRepository;
 import site.ssanta.santa.common.jwt.JwtUtil;
+import site.ssanta.santa.common.jwt.exception.JWTErrorCode;
+import site.ssanta.santa.common.jwt.exception.MemberNotFoundException;
+
+import java.util.Date;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +21,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
 
+    @Transactional(readOnly = true)
     public LoginResponseDto getToken(KakaoUserInfoResponseDto userInfo) {
         boolean isNew = !isUser(userInfo.getId());
         if (isNew) {
@@ -30,31 +37,39 @@ public class MemberService {
         Member newUser = Member.builder()
                 .id(userInfo.getId())
                 .nickname(userInfo.getProperties().getNickname())
-                .email(userInfo.getEmail())
+                .email(userInfo.getKakaoAccount().getEmail())
                 .tier(Tier.BRONZE)
+                .createAt(new Date())
+                .exp(0L)
+                .uuid(UUID.randomUUID().toString())
                 .profileUrl(userInfo.getKakaoAccount().getProfile().getThumbnailImage())
                 .build();
 
         memberRepository.save(newUser);
     }
 
-    private boolean isUser(Long id) {
+    @Transactional(readOnly = true)
+    protected boolean isUser(Long id) {
         return memberRepository.existsById(id);
     }
 
-    public VerifyTokenResponseDto getNickname(String token) {
-        String[] data = token.split(" ");
-        token = data[1];
-
-        Long userId = jwtUtil.getUserId(token);
-        Member user = memberRepository.findById(userId)
-                .orElseThrow();
-
-        return new VerifyTokenResponseDto(user.getNickname());
+    public String reissueToken(Long userId) {
+        return jwtUtil.reissue(userId);
     }
 
-    public ReIssueTokenDto reissueToken(String token) {
-        String accessToken = jwtUtil.reissue(token);
-        return new ReIssueTokenDto(accessToken);
+    public void setNickname(Long userId, SetNicknameDto dto) {
+        Member find = memberRepository.findById(userId)
+                .orElseThrow(() -> new MemberNotFoundException(JWTErrorCode.ERR_NOT_FOUND_MEMBER.toString()));
+
+        find.updateNickname(dto.getNickname());
+    }
+
+    public UserInfoVO getUserInfo(Long userId) {
+        return memberRepository.findByIdProjectsBy(userId);
+    }
+
+    public CheckNicknameResponseDto checkNickname(String nickname) {
+        boolean result = memberRepository.exitsByNickname(nickname);
+        return new CheckNicknameResponseDto(result);
     }
 }

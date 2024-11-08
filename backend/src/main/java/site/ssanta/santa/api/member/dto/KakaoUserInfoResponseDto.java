@@ -19,22 +19,23 @@ public class KakaoUserInfoResponseDto {
     @JsonProperty("kakao_account")
     private KakoAccount kakaoAccount;
 
-    private String email;
-
     @Getter
     public class Properties {
 
+
         private String nickname;
     }
-
     @Getter
     public class KakoAccount {
+
 
         @JsonProperty("profile_nickname_needs_agreement")
         private Boolean profileNicknameNeedsAgreement;
 
         @JsonProperty("profile")
         private Profile profile;
+
+        private String email;
 
         @Getter
         public class Profile {

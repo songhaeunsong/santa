@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import site.ssanta.santa.api.member.service.OauthService;
 import site.ssanta.santa.api.member.service.MemberService;
 import site.ssanta.santa.common.jwt.exception.AuthCodeMissingException;
 import site.ssanta.santa.common.jwt.exception.JWTErrorCode;
+import site.ssanta.santa.common.jwt.exception.MemberNotFoundException;
 
 @Slf4j
 @RestController
@@ -28,8 +31,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/auth")
-    @Operation(summary = "로그인/회원가입",
-            description = "인가 코드를 이용한 로그인/회원가입")
+    @Operation(summary = "로그인/회원가입", description = "인가 코드를 이용한 로그인/회원가입")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "로그인 성공",
                     headers = {
@@ -41,7 +43,7 @@ public class MemberController {
                                             example = "refresh_token=yyyy; Path=/; Max-Age=7일; HttpOnly; SameSite=None"))
                     }, content = @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = Boolean.class, description = "새로운 회원이면 true, 아니면 false")
+                    schema = @Schema(implementation = LoginResponseDto.class, description = "새로운 회원이면 true, 아니면 false")
             )),
 
             @ApiResponse(responseCode = "400", description = "코드가 누락된 경우")
@@ -78,29 +80,48 @@ public class MemberController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, access.toString())
                 .header(HttpHeaders.SET_COOKIE, refresh.toString())
-                .body(result.getIsNew());
+                .body(result);
     }
 
     @GetMapping("/mypage")
-    @Tag(name = "사용자 정보 조회", description = "Token을 이용한 사용자 정보 조회(미완성)")
-    public ResponseEntity<?> getUserInfo(
-            @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String token) {
-        log.debug("token: {}", token);
-        VerifyTokenResponseDto response = memberService.getNickname(token);
-        return ResponseEntity.ok().body(response);
+    @SecurityRequirement(name = "ACCESS")
+    @Operation(summary = "사용자 정보 조회", description = "Token을 이용한 사용자 정보 조회")
+    @ApiResponse(responseCode = "200", description = "사용자 정보 조회 성공")
+    public ResponseEntity<?> getUserInfo(@RequestAttribute("userId") Long userId) {
+        log.debug("userId: {}", userId);
+        UserInfoVO userInfo = memberService.getUserInfo(userId);
+        return ResponseEntity.ok().body(userInfo);
     }
 
     @GetMapping("/reissue")
-    @Tag(name = "토큰 재발급", description = "Refresh Token을 이용한 Access Token 재발급(미완성)")
-    public ResponseEntity<?> reissue(
-            @RequestHeader(value = "X-Refresh", required = false) String token) {
-        if (token == null) {
-            return ResponseEntity.badRequest().build();
-        }
+    @SecurityRequirement(name = "REFRESH")
+    @Operation(summary = "토큰 재발급", description = "Refresh Token을 이용한 Access Token 재발급(미완성)")
+    public ResponseEntity<?> reissue(@RequestAttribute("userId") Long userId) {
+        String accessToken = memberService.reissueToken(userId);
+        return ResponseEntity.ok().build();
+    }
 
-        log.debug("token: {}", token);
-        ReIssueTokenDto response = memberService.reissueToken(token);
-        return ResponseEntity.ok().body(response);
+    @GetMapping("/check-name")
+    @Operation(summary = "닉네임 중복 확인")
+    public ResponseEntity<?> checkNickname(@RequestParam("nickname") String nickname) {
+        CheckNicknameResponseDto result = memberService.checkNickname(nickname);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/nickname")
+    @SecurityRequirement(name = "ACCESS")
+    @Operation(summary = "닉네임 설정", description = "최초 로그인 시 닉네임 설정")
+    @ApiResponses(value= {
+            @ApiResponse(responseCode = "200", description = "닉네임 변경 성공"),
+            @ApiResponse(responseCode = "404", description = "해당하는 사용자 없음", content = @Content(
+                    schema = @Schema(implementation = MemberNotFoundException.class)
+            ))
+    }
+    )
+    public ResponseEntity<?> setNickname(@RequestAttribute("userId") Long userId,
+                                         @RequestBody SetNicknameDto dto) {
+        memberService.setNickname(userId, dto);
+        return ResponseEntity.ok().build();
     }
 }
 

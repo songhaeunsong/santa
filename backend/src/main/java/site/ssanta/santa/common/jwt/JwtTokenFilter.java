@@ -15,7 +15,9 @@ import site.ssanta.santa.common.exception.CustomException;
 import site.ssanta.santa.common.jwt.exception.InvalidJwtTokenException;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -23,8 +25,18 @@ import java.util.Map;
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private static final String ACCESS_TOKEN = "access_token";
+    private static final List<String> EXCLUDE_URL = Arrays.asList(new String[]{
+            "/member/auth"
+    });
 
     private final JwtUtil jwtUtil;
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return EXCLUDE_URL.stream()
+                .anyMatch(path::startsWith);
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

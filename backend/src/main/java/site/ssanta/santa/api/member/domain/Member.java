@@ -35,4 +35,10 @@ public class Member {
 
     @Column(name = "delete_at")
     private Date deleteAt;
+
+    public void updateNickname(String nickname) {
+        if (nickname != null) {
+            this.nickname = nickname;
+        }
+    }
 }

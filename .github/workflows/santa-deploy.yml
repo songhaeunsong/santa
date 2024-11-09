@@ -28,7 +28,6 @@ jobs:
           java-version: '17'
           distribution: 'liberica'
 
-      # Gradle 캐시
       - name: Gradle Caching
         uses: actions/cache@v3
         with:
@@ -59,5 +58,5 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu/santa
+            cd santa/
             ./deploy.sh

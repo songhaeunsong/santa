@@ -21,7 +21,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
 
-    @Transactional(readOnly = true)
     public LoginResponseDto getToken(KakaoUserInfoResponseDto userInfo) {
         boolean isNew = !isUser(userInfo.getId());
         if (isNew) {

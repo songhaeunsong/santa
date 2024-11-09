@@ -160,5 +160,33 @@ public class MemberController {
         return ResponseEntity.ok()
                 .build();
     }
+
+    @GetMapping("/logout")
+    @Operation(summary = "로그아웃")
+    @ApiResponse(responseCode = "200", description = "로그아웃 성공")
+    public ResponseEntity<?> logout() {
+        ResponseCookie access = ResponseCookie
+                .from("access_token", "")
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(0)
+                .build();
+
+        ResponseCookie refresh = ResponseCookie
+                .from("refresh_token", "")
+                .sameSite("None")
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(0)
+                .build();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, access.toString())
+                .header(HttpHeaders.SET_COOKIE, refresh.toString())
+                .build();
+    }
 }
 

@@ -26,9 +26,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private static final String ACCESS_TOKEN = "access_token";
     private static final List<String> EXCLUDE_URL = Arrays.asList(new String[]{
-            "/member/auth",
-            "/member/reissue",
-            "/member/check-nickname"
+            "/api/member/auth",
+            "/api/member/reissue",
+            "/api/member/check-nickname"
     });
 
     private final JwtUtil jwtUtil;
@@ -36,15 +36,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
+        String pathWithoutParams = path.split("\\?")[0];
+
         return EXCLUDE_URL.stream()
-                .anyMatch(path::startsWith);
+                .anyMatch(excludePath -> pathWithoutParams.equals(excludePath));
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            String token = null;
+            String token;
             Cookie[] cookies = request.getCookies();
             token = getTokenFromCookie(cookies);
 

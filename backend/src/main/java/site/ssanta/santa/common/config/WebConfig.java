@@ -23,7 +23,8 @@ public class WebConfig implements WebMvcConfigurer {
     private String PATTERN;
 
     private static final String[] JWT_FILTER_PATTERNS = {
-            "/member/**"
+            "/member/**",
+            "/member/*"
     };
 
     private final JwtTokenFilter jwtTokenFilter;
@@ -36,7 +37,8 @@ public class WebConfig implements WebMvcConfigurer {
                         HttpMethod.GET.name(),
                         HttpMethod.POST.name(),
                         HttpMethod.PATCH.name(),
-                        HttpMethod.DELETE.name())
+                        HttpMethod.DELETE.name(),
+                        HttpMethod.OPTIONS.name())
                 .allowCredentials(true)
                 .allowedHeaders("*");
     }

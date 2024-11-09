@@ -10,9 +10,17 @@
   },
   "dependencies": {
     "@tanstack/vue-query": "^5.59.16",
+    "@types/node": "^22.9.0",
     "axios": "^1.7.7",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-vue-next": "^0.454.0",
+    "radix-vue": "^1.9.8",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss-animate": "^1.0.7",
     "vue": "^3.5.12",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "vue3-kakao-maps": "^2.3.9"
   },
   "devDependencies": {
     "@types/axios": "^0.9.36",

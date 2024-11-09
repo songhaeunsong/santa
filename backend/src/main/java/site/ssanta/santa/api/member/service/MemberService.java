@@ -42,7 +42,7 @@ public class MemberService {
                 .createAt(new Date())
                 .exp(0L)
                 .uuid(UUID.randomUUID().toString())
-                .profileUrl(userInfo.getKakaoAccount().getProfile().getThumbnailImage())
+                .profileUrl(userInfo.getKakaoAccount().getProfile().getProfileImage())
                 .build();
 
         memberRepository.save(newUser);

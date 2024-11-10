@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CNNavigationMenu from '../components/ui/cnComponents/CNNavigationMenu.vue';
+import UserMenu from '../components/user/userMenu.vue';
 </script>
 
 <template>
@@ -11,6 +12,7 @@ import CNNavigationMenu from '../components/ui/cnComponents/CNNavigationMenu.vue
       </router-link>
       <div class="flex items-center gap-10">
         <CNNavigationMenu />
+        <UserMenu />
         <router-link to="/login">로그인</router-link>
       </div>
     </div>

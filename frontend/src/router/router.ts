@@ -8,6 +8,9 @@ import LoginView from '../views/LoginView.vue';
 import RedirectView from '../views/RedirectView.vue';
 import SignupInitView from '../views/SignupInitView.vue';
 import SimpleLayout from '../layouts/SimpleLayout.vue';
+import GroupView from '../views/GroupView.vue';
+import SearchView from '../views/SearchView.vue';
+import UserInformationView from '../views/UserInformationView.vue';
 
 const routes: readonly RouteRecordRaw[] = [
   {
@@ -26,8 +29,18 @@ const routes: readonly RouteRecordRaw[] = [
     children: [{ path: '', component: RankView }]
   },
   {
-    path: '/login',
+    path: '/group',
     component: DefaultLayout,
+    children: [{ path: '', component: GroupView }]
+  },
+  {
+    path: '/search',
+    component: DefaultLayout,
+    children: [{ path: '', component: SearchView }]
+  },
+  {
+    path: '/login',
+    component: SimpleLayout,
     children: [{ path: '', component: LoginView }]
   },
   {
@@ -39,6 +52,11 @@ const routes: readonly RouteRecordRaw[] = [
     path: '/oauth/redirect',
     component: DefaultLayout,
     children: [{ path: '', component: RedirectView }]
+  },
+  {
+    path: '/user',
+    component: DefaultLayout,
+    children: [{ path: '', component: UserInformationView }]
   }
 ];
 

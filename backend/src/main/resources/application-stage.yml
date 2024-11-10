@@ -1,0 +1,22 @@
+spring:
+  config:
+    import:
+      - database-stage.properties
+      - oauth.properties
+  datasource:
+    url: ${DB.URL}
+    username: ${DB.USERNAME}
+    password: ${DB.PASSWORD}
+    driver-class-name: ${DB.DRIVER}
+  jpa:
+    hibernate:
+      ddl-auto: ${HIBERNATE_DDL_AUTO:none}
+    database-platform: ${DB.DIALECT}
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    site.ssanta.santa: ${LOGGING_LEVEL:INFO}

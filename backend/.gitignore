@@ -38,3 +38,8 @@ out/
 
 ### MacOS ###
 ../.DS_Store
+
+### Local Properteis ###
+**/resources/database-local.properties
+**/resources/database-stage.properties
+**/resources/oauth.properties

@@ -62,7 +62,7 @@ public class MemberController {
                 .from("access_token", result.getAccessToken())
                 .sameSite("None")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(1000 * 60 * 30)
                 .build();
@@ -71,7 +71,7 @@ public class MemberController {
                 .from("refresh_token", result.getRefreshToken())
                 .sameSite("None")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(1000 * 60 * 60 * 24 * 7)
                 .build();
@@ -156,6 +156,8 @@ public class MemberController {
     })
     public ResponseEntity<?> setNickname(@RequestAttribute("userId") Long userId,
                                          @RequestBody SetNicknameDto dto) {
+        log.info("{}", "set nickname");
+        log.info("nickname: {}", dto.getNickname());
         memberService.setNickname(userId, dto);
         return ResponseEntity.ok()
                 .build();

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { usePostCodeApi } from '../api/authentication';
+import { usePostCodeApi } from '../api/member/authentication';
 
 const route = useRoute();
 const code = ref<string>(route.query.code as string);

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useGetCheckNickname, usePostNickname } from '../../api/authentication';
+import {
+  useGetCheckNickname,
+  usePostNickname
+} from '../../api/member/authentication';
 import Button from '../ui/button/Button.vue';
 import { useRouter } from 'vue-router';
 

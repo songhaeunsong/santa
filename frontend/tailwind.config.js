@@ -59,10 +59,12 @@ export default {
         deepGreen: '#39593F',
         santaWhite: '#FFFDF6',
         santaIvory: '#F9F5E7',
-        santaLightGreen: '#829C87',
+        santaLightGreen: '#99B39E',
         santaGreen: '#435E49',
         santaBlack: '#202721',
-        errorRed: '#A02626'
+        errorRed: '#A02626',
+        santaLightGray: '#B2B6B3',
+        santaProgressYellow: '#FFDF6F'
       },
       borderRadius: {
         xl: 'calc(var(--radius) + 4px)',

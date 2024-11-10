@@ -32,9 +32,13 @@ export default [
       'no-multi-spaces': 'error',
       semi: ['error', 'always'],
       quotes: ['error', 'single'],
-      '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/ban-ts-comment': 'warn'
+      '@typescript-eslint/ban-ts-comment': 'warn',
+      'no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+      ],
+      '@typescript-eslint/no-unused-vars': 'warn'
     }
   }
 ];

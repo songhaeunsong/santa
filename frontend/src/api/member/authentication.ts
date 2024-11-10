@@ -1,5 +1,5 @@
 import { useRouter } from 'vue-router';
-import apiClient from './apiClient';
+import apiClient from '../apiClient';
 import { useMutation } from '@tanstack/vue-query';
 
 interface PostCodeResponse {

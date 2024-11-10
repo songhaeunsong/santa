@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CNNavigationMenu from '../components/ui/cnComponents/CNNavigationMenu.vue';
-import UserMenu from '../components/user/userMenu.vue';
+import UserMenu from '../components/user/UserMenu.vue';
 </script>
 
 <template>
@@ -17,7 +17,7 @@ import UserMenu from '../components/user/userMenu.vue';
       </div>
     </div>
     <div
-      class="flex flex-col items-center justify-center flex-1 w-full overflow-auto bg-santaWhite">
+      class="flex flex-col items-center flex-1 w-full overflow-auto bg-santaWhite">
       <router-view></router-view>
     </div>
   </div>

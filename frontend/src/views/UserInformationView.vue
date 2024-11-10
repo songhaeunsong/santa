@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import UserInformation from '../components/user/UserInformation.vue';
+</script>
 
 <template>
-  <div>userInformation</div>
+  <UserInformation />
 </template>

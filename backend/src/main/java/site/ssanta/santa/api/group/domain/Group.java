@@ -8,9 +8,9 @@ import java.util.Date;
 @Entity
 @Getter
 @Builder
+@AllArgsConstructor
 @Table(name = "groups")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Group {
 
     @Id
@@ -28,4 +28,7 @@ public class Group {
 
     @Column(name = "delete_at")
     private Date deleteAt;
+
+    @Column(length = 100)
+    private String description;
 }

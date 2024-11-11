@@ -7,6 +7,7 @@ import java.util.Date;
 
 @Entity
 @Getter
+@Table(name = "group_participants")
 public class GroupParticipant {
 
     @Id

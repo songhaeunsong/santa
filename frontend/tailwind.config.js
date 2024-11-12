@@ -64,7 +64,9 @@ export default {
         santaBlack: '#202721',
         errorRed: '#A02626',
         santaLightGray: '#B2B6B3',
-        santaProgressYellow: '#FFDF6F'
+        santaProgressGreen: '#699D74',
+        santaGray: '#636C67',
+        santaBeige: '#F4EBD3'
       },
       borderRadius: {
         xl: 'calc(var(--radius) + 4px)',
@@ -95,6 +97,13 @@ export default {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'collapsible-down': 'collapsible-down 0.2s ease-in-out',
         'collapsible-up': 'collapsible-up 0.2s ease-in-out'
+      },
+      scrollbar: {
+        none: {
+          '&::-webkit-scrollbar': { display: 'none' },
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none'
+        }
       }
     }
   },

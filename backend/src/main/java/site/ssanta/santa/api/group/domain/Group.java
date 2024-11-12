@@ -23,12 +23,15 @@ public class Group {
     @Column(name = "admin_id")
     private Long adminId;
 
+    @Column(length = 100)
+    private String description;
+
+    @Column(name = "count_of_members")
+    private Long countOfMembers;
+
     @Column(name = "create_at")
     private Date createAt;
 
     @Column(name = "delete_at")
     private Date deleteAt;
-
-    @Column(length = 100)
-    private String description;
 }

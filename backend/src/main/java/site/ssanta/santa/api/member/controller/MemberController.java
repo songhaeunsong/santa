@@ -106,10 +106,10 @@ public class MemberController {
                                             example = "access_token=...;Path=/;Max-Age=30분;HttpOnly;SameSite=None")),
                     }, content = @Content(
             )),
-            @ApiResponse(responseCode = "400", description = "refresh token이 누락되거나 지원하지 않는 경우", content =
-            @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "401", description = "refresh token이 만료된 경우", content = @Content(
-                    schema = @Schema(implementation = ExceptionResponse.class)
+            @ApiResponse(responseCode = "400", description = "refresh token이 누락되거나 지원하지 않는 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "401", description = "refresh token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
             )),
     })
     public ResponseEntity<?> reissue(@CookieValue(name = "refresh_token", required = false) String refreshToken) {

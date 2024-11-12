@@ -17,7 +17,7 @@ public class GroupService {
 
     @Transactional(readOnly = true)
     public List<GroupVO> getAllGroups() {
-        return groupRepository.findAllProjects();
+        return groupRepository.findAllBy();
     }
 
     @Transactional(readOnly = true)

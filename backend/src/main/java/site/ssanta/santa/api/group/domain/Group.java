@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Builder
 @AllArgsConstructor
-@Table(name = "groups")
+@Table(name = "`groups`")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Group {
 

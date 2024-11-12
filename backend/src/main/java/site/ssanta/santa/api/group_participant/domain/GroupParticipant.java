@@ -1,4 +1,4 @@
-package site.ssanta.santa.api.group.domain;
+package site.ssanta.santa.api.group_participant.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;

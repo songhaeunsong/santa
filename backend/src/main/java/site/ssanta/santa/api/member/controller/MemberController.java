@@ -22,7 +22,7 @@ import site.ssanta.santa.common.jwt.exception.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
-@Tag(name = "User API", description = "User API")
+@Tag(name = "Member API", description = "Member API")
 public class MemberController {
 
     private final OauthService oauthService;

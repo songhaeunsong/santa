@@ -15,11 +15,14 @@ import site.ssanta.santa.api.group.dto.GroupInfoResponseDto;
 import site.ssanta.santa.api.group.dto.GroupVO;
 import site.ssanta.santa.api.group.dto.ParticipantInfo;
 import site.ssanta.santa.api.group.service.GroupService;
+import site.ssanta.santa.api.group_participant.domain.Role;
 import site.ssanta.santa.api.group_participant.dto.ParticipantVO;
 import site.ssanta.santa.api.group_participant.service.GroupParticipantService;
 import site.ssanta.santa.api.member.service.MemberService;
 import site.ssanta.santa.common.exception.ExceptionResponse;
 import site.ssanta.santa.common.jwt.JwtUtil;
+import site.ssanta.santa.common.jwt.exception.JWTErrorCode;
+import site.ssanta.santa.common.jwt.exception.MemberNotFoundException;
 
 import java.util.List;
 import java.util.Objects;
@@ -79,6 +82,10 @@ public class GroupController {
                         .nickname(memberService.getUserInfo(participant.getMemberId()).getNickname())
                         .build())
                 .toList();
+        ParticipantInfo admin = participants.stream()
+                .filter(participant -> participant.getRole().equals(Role.ADMIN))
+                .findFirst()
+                .orElseThrow(() -> new MemberNotFoundException(JWTErrorCode.ERR_NOT_FOUND_MEMBER.name()));
 
         GroupInfoResponseDto result = GroupInfoResponseDto.builder()
                 .id(groupId)
@@ -86,6 +93,7 @@ public class GroupController {
                 .name(group.getName())
                 .participants(participants)
                 .adminId(group.getAdminId())
+                .adminName(admin.getNickname())
                 .description(group.getDescription())
                 .countOfMembers(group.getCountOfMembers())
                 .isAdmin(Objects.equals(group.getAdminId(), currentUser))

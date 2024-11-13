@@ -69,9 +69,11 @@ public class GroupController {
     })
     public ResponseEntity<?> getGroupInfo(@RequestParam("id") Long groupId,
                                           @CookieValue(value = "access_token", required = false) String accessToken) {
-        Long currentUser = -1L;
+        Long currentUser;
         if (accessToken != null) {
             currentUser = jwtUtil.getUserId(accessToken);
+        } else {
+            currentUser = -1L;
         }
 
         GroupVO group = groupService.findById(groupId);
@@ -87,6 +89,11 @@ public class GroupController {
                 .filter(participant -> participant.getRole().equals(Role.ADMIN))
                 .findFirst()
                 .orElseThrow(() -> new MemberNotFoundException(JWTErrorCode.ERR_NOT_FOUND_MEMBER.name()));
+        ParticipantInfo isMember = participants.stream()
+                .filter(participant -> participant.getMemberId()
+                        .equals(currentUser))
+                .findFirst()
+                .orElse(null);
 
         GroupInfoResponseDto result = GroupInfoResponseDto.builder()
                 .id(groupId)
@@ -95,6 +102,7 @@ public class GroupController {
                 .participants(participants)
                 .adminId(group.getAdminId())
                 .adminName(admin.getNickname())
+                .isMember(isMember != null)
                 .description(group.getDescription())
                 .countOfMembers(group.getCountOfMembers())
                 .isAdmin(Objects.equals(group.getAdminId(), currentUser))

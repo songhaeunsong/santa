@@ -20,6 +20,7 @@ public class GroupInfoResponseDto {
     private String description;
     private Long countOfMembers;
     private Boolean isAdmin;
+    private Boolean isMember;
 
     @ArraySchema(schema = @Schema(implementation = ParticipantInfo.class))
     private List<ParticipantInfo> participants;

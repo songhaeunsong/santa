@@ -136,6 +136,26 @@ public class GroupController {
         return ResponseEntity.created(uri)
                 .body(result);
     }
+
+    @PostMapping("/join")
+    @Operation(summary = "그룹 참가", description = "참가자가 아닌 사용자가 그룹에 참여")
+    @SecurityRequirement(name = "ACCESS")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "참가 성공"),
+            @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+            )),
+            @ApiResponse(responseCode = "404", description = "사용자가 없는 경우",
+            content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    public ResponseEntity<?> joinGroup(@RequestAttribute("userId") Long userId,
+                                       @RequestBody JoinGroupRequestDto dto) {
+        MemberInfoVO member = memberService.getUserInfo(userId);
+        Long groupId = dto.getGroupId();
+        groupService.join(member, groupId);
+        groupParticipantService.save(member.getId(), groupId, Role.PARTICIPANT);
+        return ResponseEntity.created(null).build();
+    }
 }
 
 

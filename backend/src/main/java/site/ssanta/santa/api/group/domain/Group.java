@@ -2,6 +2,7 @@ package site.ssanta.santa.api.group.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import site.ssanta.santa.api.member.dto.MemberInfoVO;
 
 import java.util.Date;
 
@@ -34,4 +35,9 @@ public class Group {
 
     @Column(name = "delete_at")
     private Date deleteAt;
+
+    public void joinMember(MemberInfoVO member) {
+        this.exp += member.getExp();
+        this.countOfMembers += 1;
+    }
 }

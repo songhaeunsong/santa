@@ -29,6 +29,7 @@ public class GroupService {
                 .orElseThrow(GroupNotFoundException::new);
     }
 
+    @Transactional
     public Long createGroup(MemberInfoVO member, CreateGroupRequestDto dto) {
         Group group = groupRepository.save(Group.builder()
                 .adminId(member.getId())
@@ -38,5 +39,13 @@ public class GroupService {
                 .build());
 
         return group.getId();
+    }
+
+    @Transactional
+    public void join(MemberInfoVO member, Long groupId) {
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow();
+
+        group.joinMember(member);
     }
 }

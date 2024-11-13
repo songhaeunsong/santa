@@ -67,7 +67,12 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public MemberInfoVO getUserInfo(Long userId) {
-        return memberRepository.findProjectsById(userId);
+        MemberInfoVO result = memberRepository.findProjectsById(userId);
+        if (result == null) {
+            throw new MemberNotFoundException(JWTErrorCode.ERR_NOT_FOUND_MEMBER.toString());
+        }
+
+        return result;
     }
 
     @Transactional(readOnly = true)

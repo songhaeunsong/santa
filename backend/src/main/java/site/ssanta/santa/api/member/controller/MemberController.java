@@ -120,12 +120,12 @@ public class MemberController {
 
         MemberInfoVO memberInfo = memberService.getUserInfo(userId);
         MemberProfileResponseDto result = MemberProfileResponseDto.builder()
-                .nickname(memberInfo.getNickname())
                 .exp(memberInfo.getExp())
-                .email(memberInfo.getEmail())
                 .tier(memberInfo.getTier())
-                .isSelf(Objects.equals(currentMember, userId))
+                .email(memberInfo.getEmail())
+                .nickname(memberInfo.getNickname())
                 .profileUrl(memberInfo.getProfileUrl())
+                .isSelf(Objects.equals(currentMember, userId))
                 .build();
 
         return ResponseEntity.ok()

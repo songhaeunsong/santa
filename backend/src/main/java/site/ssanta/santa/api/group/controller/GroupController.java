@@ -102,6 +102,13 @@ public class GroupController {
         return ResponseEntity.ok()
                 .body(result);
     }
+
+    @PostMapping()
+
+    public ResponseEntity<?> createGroup() {
+
+        return ResponseEntity.created(null).build();
+    }
 }
 
 

@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
         info = @Info(title = "SANTA API SPEC",
                 description = "Specification for service SANTA",
                 version = "v1.0.0"),
-        servers = @Server(url = "https://15.168.219.235.nip.io/ap", description = "HTTPS server")
+        servers = @Server(url = "https://15.168.219.235.nip.io/api", description = "HTTPS server")
 )
 @SecuritySchemes(value = {
         @SecurityScheme(

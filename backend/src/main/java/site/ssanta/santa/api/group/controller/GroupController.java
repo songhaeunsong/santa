@@ -5,25 +5,26 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import site.ssanta.santa.api.group.dto.AllGroupsResponseDto;
-import site.ssanta.santa.api.group.dto.GroupInfoResponseDto;
-import site.ssanta.santa.api.group.dto.GroupVO;
-import site.ssanta.santa.api.group.dto.ParticipantInfo;
+import site.ssanta.santa.api.group.dto.*;
 import site.ssanta.santa.api.group.service.GroupService;
 import site.ssanta.santa.api.group_participant.domain.Role;
 import site.ssanta.santa.api.group_participant.dto.ParticipantVO;
 import site.ssanta.santa.api.group_participant.service.GroupParticipantService;
+import site.ssanta.santa.api.member.dto.MemberInfoVO;
 import site.ssanta.santa.api.member.service.MemberService;
 import site.ssanta.santa.common.exception.ExceptionResponse;
 import site.ssanta.santa.common.jwt.JwtUtil;
 import site.ssanta.santa.common.jwt.exception.JWTErrorCode;
 import site.ssanta.santa.common.jwt.exception.MemberNotFoundException;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 
@@ -104,10 +105,28 @@ public class GroupController {
     }
 
     @PostMapping()
+    @Operation(summary = "그룹 생성", description = "신규 그룹을 생성")
+    @SecurityRequirement(name = "ACCESS")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "생성 성공", content = @Content(
+                    schema = @Schema(implementation = CreateGroupResponseDto.class)
+            )),
+            @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+            )),
+    })
+    public ResponseEntity<?> createGroup(@RequestAttribute("userId") Long userId,
+                                         @RequestBody CreateGroupRequestDto dto) throws URISyntaxException {
+        MemberInfoVO admin = memberService.getUserInfo(userId);
+        Long groupId = groupService.createGroup(admin, dto);
+        groupParticipantService.save(userId, groupId, Role.ADMIN);
 
-    public ResponseEntity<?> createGroup() {
-
-        return ResponseEntity.created(null).build();
+        CreateGroupResponseDto result = CreateGroupResponseDto.builder()
+                .groupId(groupId)
+                .build();
+        URI uri = new URI(String.format("https://15.168.219.235.nip.io/api/group/detail?id=%d", groupId));
+        return ResponseEntity.created(uri)
+                .body(result);
     }
 }
 

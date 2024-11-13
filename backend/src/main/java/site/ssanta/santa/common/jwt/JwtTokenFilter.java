@@ -46,7 +46,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        if (HttpMethod.OPTIONS.name().equals(request.getMethod())) {
+        if (isExcluded(request)) {
             response.setStatus(HttpServletResponse.SC_OK);
             filterChain.doFilter(request, response);
             return;
@@ -97,5 +97,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         ObjectMapper mapper = new ObjectMapper();
         response.getWriter().write(mapper.writeValueAsString(error));
+    }
+
+    private boolean isExcluded(HttpServletRequest request) {
+        boolean isOption = HttpMethod.OPTIONS.name().equals(request.getMethod());
+        boolean isGetGroup = request.getContextPath().equals("/group")
+                && HttpMethod.GET.name().equals(request.getMethod());
+
+        return isOption || isGetGroup;
     }
 }

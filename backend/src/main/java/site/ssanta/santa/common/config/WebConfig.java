@@ -24,7 +24,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     private static final String[] JWT_FILTER_PATTERNS = {
             "/member/**",
-            "/member/*"
+            "/member/*",
+            "/group"
     };
 
     private final JwtTokenFilter jwtTokenFilter;

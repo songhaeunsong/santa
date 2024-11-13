@@ -3,9 +3,12 @@ package site.ssanta.santa.api.group.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import site.ssanta.santa.api.group.domain.Group;
+import site.ssanta.santa.api.group.dto.CreateGroupRequestDto;
 import site.ssanta.santa.api.group.dto.GroupVO;
 import site.ssanta.santa.api.group.exception.GroupNotFoundException;
 import site.ssanta.santa.api.group.repository.GroupRepository;
+import site.ssanta.santa.api.member.dto.MemberInfoVO;
 
 import java.util.List;
 
@@ -24,5 +27,16 @@ public class GroupService {
     public GroupVO findById(Long groupId) {
         return groupRepository.findProjectsById(groupId)
                 .orElseThrow(GroupNotFoundException::new);
+    }
+
+    public Long createGroup(MemberInfoVO member, CreateGroupRequestDto dto) {
+        Group group = groupRepository.save(Group.builder()
+                .adminId(member.getId())
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .exp(member.getExp())
+                .build());
+
+        return group.getId();
     }
 }

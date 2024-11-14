@@ -4,6 +4,7 @@ import site.ssanta.santa.api.member.domain.Tier;
 
 public interface MemberInfoVO {
 
+    Long getId();
     String getEmail();
     String getNickname();
     String getProfileUrl();

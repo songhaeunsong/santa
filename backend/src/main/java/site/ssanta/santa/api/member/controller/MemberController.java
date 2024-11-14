@@ -12,21 +12,27 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import site.ssanta.santa.api.group.service.GroupService;
+import site.ssanta.santa.api.group_participant.service.GroupParticipantService;
 import site.ssanta.santa.api.member.dto.*;
 import site.ssanta.santa.api.member.service.OauthService;
 import site.ssanta.santa.api.member.service.MemberService;
 import site.ssanta.santa.common.exception.ExceptionResponse;
+import site.ssanta.santa.common.jwt.JwtUtil;
 import site.ssanta.santa.common.jwt.exception.*;
+
+import java.util.Objects;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
-@Tag(name = "User API", description = "User API")
+@Tag(name = "Member API", description = "Member API")
 public class MemberController {
 
     private final OauthService oauthService;
     private final MemberService memberService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/auth")
     @Operation(summary = "로그인/회원가입", description = "인가 코드를 이용한 로그인/회원가입")
@@ -62,7 +68,7 @@ public class MemberController {
                 .from("access_token", result.getAccessToken())
                 .sameSite("None")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(1000 * 60 * 30)
                 .build();
@@ -71,7 +77,7 @@ public class MemberController {
                 .from("refresh_token", result.getRefreshToken())
                 .sameSite("None")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(1000 * 60 * 60 * 24 * 7)
                 .build();
@@ -88,11 +94,42 @@ public class MemberController {
     @ApiResponse(responseCode = "200", description = "사용자 정보 조회 성공", content = @Content(
             schema = @Schema(implementation = MemberInfoVO.class))
     )
-    public ResponseEntity<?> getUserInfo(@RequestAttribute("userId") Long userId) {
+    public ResponseEntity<?> getMyInfo(@RequestAttribute("userId") Long userId) {
         log.debug("userId: {}", userId);
         MemberInfoVO memberInfo = memberService.getUserInfo(userId);
         return ResponseEntity.ok()
                 .body(memberInfo);
+    }
+
+    @GetMapping("/profile")
+    @Operation(summary = "다른 사용자 정보 조회", description = " 다른 사용자 정보 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사용자 정보 조회 성공", content = @Content(
+                    schema = @Schema(implementation = MemberProfileResponseDto.class))
+            ),
+            @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+            )),
+    })
+    public ResponseEntity<?> getUserInfo(@RequestParam("id") Long userId,
+                                         @CookieValue(value = "access_token", required = false) String accessToken) {
+        Long currentMember = -1L;
+        if (accessToken != null) {
+            currentMember = jwtUtil.getUserId(accessToken);
+        }
+
+        MemberInfoVO memberInfo = memberService.getUserInfo(userId);
+        MemberProfileResponseDto result = MemberProfileResponseDto.builder()
+                .exp(memberInfo.getExp())
+                .tier(memberInfo.getTier())
+                .email(memberInfo.getEmail())
+                .nickname(memberInfo.getNickname())
+                .profileUrl(memberInfo.getProfileUrl())
+                .isSelf(Objects.equals(currentMember, userId))
+                .build();
+
+        return ResponseEntity.ok()
+                .body(result);
     }
 
     @GetMapping("/reissue")
@@ -106,11 +143,11 @@ public class MemberController {
                                             example = "access_token=...;Path=/;Max-Age=30분;HttpOnly;SameSite=None")),
                     }, content = @Content(
             )),
-            @ApiResponse(responseCode = "400", description = "refresh token이 누락되거나 지원하지 않는 경우", content =
-            @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "401", description = "refresh token이 만료된 경우", content = @Content(
-                    schema = @Schema(implementation = ExceptionResponse.class)
-            )),
+            @ApiResponse(responseCode = "400", description = "refresh token이 누락되거나 지원하지 않는 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "401", description = "refresh token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+                    )),
     })
     public ResponseEntity<?> reissue(@CookieValue(name = "refresh_token", required = false) String refreshToken) {
         if (refreshToken == null) {
@@ -156,6 +193,8 @@ public class MemberController {
     })
     public ResponseEntity<?> setNickname(@RequestAttribute("userId") Long userId,
                                          @RequestBody SetNicknameDto dto) {
+        log.info("{}", "set nickname");
+        log.info("nickname: {}", dto.getNickname());
         memberService.setNickname(userId, dto);
         return ResponseEntity.ok()
                 .build();

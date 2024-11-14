@@ -22,12 +22,10 @@ public class KakaoUserInfoResponseDto {
     @Getter
     public class Properties {
 
-
         private String nickname;
     }
     @Getter
     public class KakoAccount {
-
 
         @JsonProperty("profile_nickname_needs_agreement")
         private Boolean profileNicknameNeedsAgreement;
@@ -42,10 +40,10 @@ public class KakaoUserInfoResponseDto {
 
             private String nickname;
 
-            @JsonProperty("profile_image")
+            @JsonProperty("profile_image_url")
             private String profileImage;
 
-            @JsonProperty("thumbnail_image")
+            @JsonProperty("thumbnail_image_url")
             private String thumbnailImage;
 
             @JsonProperty("is_default_nickname")

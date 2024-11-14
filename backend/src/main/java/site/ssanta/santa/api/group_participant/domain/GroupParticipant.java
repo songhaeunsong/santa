@@ -1,12 +1,16 @@
-package site.ssanta.santa.api.group.domain;
+package site.ssanta.santa.api.group_participant.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.Date;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
+@Table(name = "group_participants")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GroupParticipant {
 
     @Id

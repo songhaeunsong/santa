@@ -21,6 +21,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
 
+    @Transactional
     public LoginResponseDto getToken(KakaoUserInfoResponseDto userInfo) {
         boolean isNew = !isUser(userInfo.getId());
         if (isNew) {
@@ -41,7 +42,7 @@ public class MemberService {
                 .createAt(new Date())
                 .exp(0L)
                 .uuid(UUID.randomUUID().toString())
-                .profileUrl(userInfo.getKakaoAccount().getProfile().getProfileImage())
+                .profileUrl(userInfo.getKakaoAccount().getProfile().getThumbnailImage())
                 .build();
 
         memberRepository.save(newUser);
@@ -56,6 +57,7 @@ public class MemberService {
         return jwtUtil.reissue(token);
     }
 
+    @Transactional
     public void setNickname(Long userId, SetNicknameDto dto) {
         Member find = memberRepository.findById(userId)
                 .orElseThrow(() -> new MemberNotFoundException(JWTErrorCode.ERR_NOT_FOUND_MEMBER.toString()));
@@ -63,10 +65,17 @@ public class MemberService {
         find.updateNickname(dto.getNickname());
     }
 
+    @Transactional(readOnly = true)
     public MemberInfoVO getUserInfo(Long userId) {
-        return memberRepository.findProjectsById(userId);
+        MemberInfoVO result = memberRepository.findProjectsById(userId);
+        if (result == null) {
+            throw new MemberNotFoundException(JWTErrorCode.ERR_NOT_FOUND_MEMBER.toString());
+        }
+
+        return result;
     }
 
+    @Transactional(readOnly = true)
     public CheckNicknameResponseDto checkNickname(String nickname) {
         boolean result = memberRepository.existsMemberByNicknameEqualsIgnoreCase(nickname);
         return new CheckNicknameResponseDto(result);

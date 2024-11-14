@@ -24,7 +24,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     private static final String[] JWT_FILTER_PATTERNS = {
             "/member/**",
-            "/member/*"
+            "/member/*",
+            "/group"
     };
 
     private final JwtTokenFilter jwtTokenFilter;
@@ -40,7 +41,8 @@ public class WebConfig implements WebMvcConfigurer {
                         HttpMethod.DELETE.name(),
                         HttpMethod.OPTIONS.name())
                 .allowCredentials(true)
-                .allowedHeaders("*");
+                .allowedHeaders("*")
+                .exposedHeaders("*");
     }
 
     @Bean

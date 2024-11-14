@@ -7,6 +7,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -45,6 +46,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        if (isExcluded(request)) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         try {
             String token;
             Cookie[] cookies = request.getCookies();
@@ -90,5 +97,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         ObjectMapper mapper = new ObjectMapper();
         response.getWriter().write(mapper.writeValueAsString(error));
+    }
+
+    private boolean isExcluded(HttpServletRequest request) {
+        boolean isOption = HttpMethod.OPTIONS.name().equals(request.getMethod());
+        boolean isGetGroup = request.getContextPath().equals("/group")
+                && HttpMethod.GET.name().equals(request.getMethod());
+
+        return isOption || isGetGroup;
     }
 }

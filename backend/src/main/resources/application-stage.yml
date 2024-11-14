@@ -12,10 +12,6 @@ spring:
     hibernate:
       ddl-auto: ${HIBERNATE_DDL_AUTO:none}
     database-platform: ${DB.DIALECT}
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
 
 logging:
   level:

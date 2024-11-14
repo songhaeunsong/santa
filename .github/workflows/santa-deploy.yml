@@ -1,11 +1,14 @@
 name: "santa deploy EC2"
 on:
   push:
+    branches-ignore:
+      - main
     paths:
       - 'backend/**'
 
 jobs:
   deploy:
+    if: github.repository == 'famo1245/santa'
     runs-on: ubuntu-latest
     defaults:
       run:

@@ -25,8 +25,9 @@ public class GroupParticipantService {
     public void save(Long userId, Long groupId, Role role) {
         groupParticipantRepository.save(GroupParticipant.builder()
                 .id(userId)
-                .groupId(groupId)
                 .role(role)
+                .groupId(groupId)
+                .memberId(userId)
                 .build());
     }
 }

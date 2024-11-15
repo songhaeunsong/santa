@@ -26,7 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
             "/member/**",
             "/member/*",
             "/group",
-            "/group/join"
+            "/group/join",
+            "/appointment"
     };
 
     private final JwtTokenFilter jwtTokenFilter;

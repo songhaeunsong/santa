@@ -2,7 +2,9 @@ package site.ssanta.santa.api.appointment_participant.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import site.ssanta.santa.api.appointment.domain.Appointment;
 import site.ssanta.santa.api.group_participant.domain.Role;
+import site.ssanta.santa.api.member.domain.Member;
 
 @Entity
 @Builder
@@ -16,11 +18,13 @@ public class AppointmentParticipant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "appointment_id")
-    private Long appointmentId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
 
-    @Column(name = "member_id")
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     private Role role;
 }

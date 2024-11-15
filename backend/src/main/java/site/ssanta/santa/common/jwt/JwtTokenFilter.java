@@ -101,7 +101,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private boolean isExcluded(HttpServletRequest request) {
         boolean isOption = HttpMethod.OPTIONS.name().equals(request.getMethod());
-        boolean isGetGroup = request.getContextPath().equals("/group")
+        boolean isGetGroup = request.getServletPath().equals("/group")
                 && HttpMethod.GET.name().equals(request.getMethod());
 
         return isOption || isGetGroup;

@@ -80,4 +80,10 @@ public class MemberService {
         boolean result = memberRepository.existsMemberByNicknameEqualsIgnoreCase(nickname);
         return new CheckNicknameResponseDto(result);
     }
+
+    @Transactional(readOnly = true)
+    public Member getMemberById(Long userId) {
+        return memberRepository.findById(userId)
+                .orElseThrow();
+    }
 }

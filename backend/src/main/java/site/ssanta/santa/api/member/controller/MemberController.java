@@ -227,5 +227,21 @@ public class MemberController {
                 .header(HttpHeaders.SET_COOKIE, refresh.toString())
                 .build();
     }
+
+    @GetMapping("/active")
+    @SecurityRequirement(name = "ACCESS")
+    @Operation(summary = "로그인 상태 확인", description = "사용자의 로그인 상태 확인")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "로그인 상태"),
+            @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+            )),
+            @ApiResponse(responseCode = "400", description = "코드가 누락된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+            ))
+    })
+    public ResponseEntity<?> getActive() {
+        return ResponseEntity.ok().build();
+    }
 }
 

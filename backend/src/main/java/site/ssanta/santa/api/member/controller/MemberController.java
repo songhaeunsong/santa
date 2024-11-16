@@ -12,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import site.ssanta.santa.api.group.service.GroupService;
-import site.ssanta.santa.api.group_participant.service.GroupParticipantService;
 import site.ssanta.santa.api.member.dto.*;
 import site.ssanta.santa.api.member.service.OauthService;
 import site.ssanta.santa.api.member.service.MemberService;
@@ -202,13 +200,21 @@ public class MemberController {
 
     @GetMapping("/logout")
     @Operation(summary = "로그아웃")
-    @ApiResponse(responseCode = "200", description = "로그아웃 성공")
+    @ApiResponse(responseCode = "200", description = "로그아웃 성공",
+    headers = {
+            @Header(name = HttpHeaders.SET_COOKIE, description = "Access Token",
+                    schema = @Schema(type = "string",
+                            example = "access_token=...; Path=/;Max-Age=0;HttpOnly;SameSite=None")),
+            @Header(name = HttpHeaders.SET_COOKIE2, description = "Refresh Token",
+                    schema = @Schema(type = "string",
+                            example = "refresh_token=...; Path=/;Max-Age=0;HttpOnly;SameSite=None"))
+    })
     public ResponseEntity<?> logout() {
         ResponseCookie access = ResponseCookie
                 .from("access_token", "")
                 .sameSite("None")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(0)
                 .build();
@@ -217,7 +223,7 @@ public class MemberController {
                 .from("refresh_token", "")
                 .sameSite("None")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(0)
                 .build();

@@ -13,10 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.ssanta.santa.api.appointment.domain.Appointment;
-import site.ssanta.santa.api.appointment.dto.AppointmentListResponseDto;
-import site.ssanta.santa.api.appointment.dto.AppointmentResponseDto;
-import site.ssanta.santa.api.appointment.dto.MakeAppointmentRequestDto;
-import site.ssanta.santa.api.appointment.dto.ParticipantInfo;
+import site.ssanta.santa.api.appointment.dto.*;
 import site.ssanta.santa.api.appointment.service.AppointmentService;
 import site.ssanta.santa.api.appointment_participant.service.AppointmentParticipantService;
 import site.ssanta.santa.api.group_participant.domain.Role;
@@ -82,6 +79,7 @@ public class AppointmentController {
         }
 
         List<Appointment> appointments = appointmentService.getMonthlyAppointments(groupId, date);
+        log.debug("count of result: {}", appointments.size());
         List<AppointmentResponseDto> responseDtoList = appointments.stream()
                 .map(appointment -> {
                     List<ParticipantInfo> participants = appointment.getParticipants()
@@ -113,5 +111,24 @@ public class AppointmentController {
 
         AppointmentListResponseDto result = new AppointmentListResponseDto(responseDtoList);
         return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/join")
+    @SecurityRequirement(name = "ACCESS")
+    @Operation(summary = "약속 참가", description = "약속 참가 요청")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "참가 성공"),
+            @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+                    )),
+            @ApiResponse(responseCode = "404", description = "해당 약속이 없는 경우")
+    })
+    public ResponseEntity<?> joinAppointment(@RequestAttribute("userId") Long userId,
+                                             @RequestBody AppointmentJoinRequestDto dto) {
+        Member member = memberService.getMemberById(userId);
+        Appointment appointment = appointmentService.join(dto);
+        appointmentParticipantService.join(appointment, member, Role.PARTICIPANT);
+
+        return ResponseEntity.created(null).build();
     }
 }

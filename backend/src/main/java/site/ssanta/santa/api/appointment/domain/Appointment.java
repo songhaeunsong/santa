@@ -40,4 +40,8 @@ public class Appointment {
 
     @OneToMany(mappedBy = "appointment")
     private List<AppointmentParticipant> participants;
+
+    public void join() {
+        this.countOfMembers += 1L;
+    }
 }

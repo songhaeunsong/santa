@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `mountain_favorites`
+CREATE TABLE IF NOT EXISTS `mountain_likes`
 (
     `id`       BIGINT AUTO_INCREMENT PRIMARY KEY,
     `member_id` BIGINT,

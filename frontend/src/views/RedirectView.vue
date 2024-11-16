@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePostCodeApi } from '../api/member/authentication';
+import BaseLoading from '../components/BaseLoading.vue';
 
 const route = useRoute();
 const code = ref<string>(route.query.code as string);
@@ -16,5 +17,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="text-xl text-deepGreen">loading...</div>
+  <BaseLoading />
 </template>

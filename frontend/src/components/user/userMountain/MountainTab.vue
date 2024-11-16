@@ -13,7 +13,7 @@ import Tabs from '../../ui/tabs/Tabs.vue';
     default-value="completed"
     class="w-[100%]">
     <TabsList class="w-[100%] bg-santaWhite">
-      <TabsTrigger value="completed"> 완동 </TabsTrigger>
+      <TabsTrigger value="completed"> 완등 </TabsTrigger>
       <TabsTrigger value="incompleted"> 진행중 </TabsTrigger>
       <TabsTrigger value="like"> 관심 </TabsTrigger>
     </TabsList>

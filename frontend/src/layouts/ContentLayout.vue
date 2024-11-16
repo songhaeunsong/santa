@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import CNNavigationMenu from '../components/ui/cnComponents/CNNavigationMenu.vue';
 import UserMenu from '../components/user/UserMenu.vue';
 import { getLoginStatus } from '../utils/loginUtil';
 
-const isActive = computed(() => {
-  return getLoginStatus();
-});
+const isActive = getLoginStatus();
 </script>
 
 <template>
@@ -16,18 +13,19 @@ const isActive = computed(() => {
       <router-link to="/">
         <span class="text-2xl font-bold">SANTA</span>
       </router-link>
-      <div class="flex items-center gap-10">
+      <div class="flex items-center gap-1">
         <CNNavigationMenu />
         <UserMenu v-if="isActive" />
         <router-link
           v-if="!isActive"
           to="/login"
+          class="ml-8"
           >로그인</router-link
         >
       </div>
     </div>
     <div
-      class="flex flex-col items-center flex-1 w-full overflow-auto bg-santaWhite">
+      class="flex flex-col items-center flex-1 w-full overflow-auto bg-santaIvory">
       <router-view></router-view>
     </div>
   </div>

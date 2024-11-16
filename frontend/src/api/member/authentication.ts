@@ -1,6 +1,7 @@
 import { useRouter } from 'vue-router';
 import apiClient from '../apiClient';
-import { useMutation } from '@tanstack/vue-query';
+import { useMutation, useQuery } from '@tanstack/vue-query';
+import { setLoginStatus } from '../../utils/loginUtil';
 
 interface PostCodeResponse {
   isNew: boolean;
@@ -10,10 +11,7 @@ interface GetCheckNicknameResponse {
   isDuplicated: boolean;
 }
 
-type NicknameProps = string;
-type AuthCodeProps = string;
-
-const postCode = async (code: AuthCodeProps): Promise<PostCodeResponse> => {
+const postCode = async (code: string) => {
   return (await apiClient.post<PostCodeResponse>('/member/auth', { code }))
     .data;
 };
@@ -21,8 +19,8 @@ const postCode = async (code: AuthCodeProps): Promise<PostCodeResponse> => {
 export const usePostCodeApi = () => {
   const router = useRouter();
 
-  const { mutateAsync } = useMutation<PostCodeResponse, Error, string>({
-    mutationFn: (code: AuthCodeProps) => postCode(code),
+  const { mutateAsync } = useMutation({
+    mutationFn: (code: string) => postCode(code),
     onSuccess: data => {
       if (data.isNew) {
         router.push('/login/init');
@@ -39,7 +37,7 @@ export const usePostCodeApi = () => {
 };
 
 const getCheckNickname = async (
-  nickname: NicknameProps
+  nickname: string
 ): Promise<GetCheckNicknameResponse> => {
   return (
     await apiClient.get<GetCheckNicknameResponse>('/member/check-nickname', {
@@ -70,3 +68,41 @@ export const usePostNickname = () => {
   });
   return mutateAsync;
 };
+
+const getLogout = async () => {
+  await apiClient.get('/member/logout');
+};
+
+export const useGetLogout = () => {
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: () => getLogout(),
+    onSuccess: () => {
+      setLoginStatus(false);
+      router.push('/');
+    },
+    onError: error => {
+      throw error;
+    }
+  });
+};
+
+type SuccessResponse = '';
+
+type ErrorResponse = {
+  status: number;
+  code: string;
+};
+
+export type ResponseType = SuccessResponse | ErrorResponse;
+
+export const getIsActive = async () =>
+  await apiClient.get<ResponseType>('/member/active');
+
+export const useGetIsActive = () =>
+  useQuery({
+    queryKey: ['isActive'],
+    queryFn: () => getIsActive(),
+    staleTime: 1000 * 60 * 4
+  });

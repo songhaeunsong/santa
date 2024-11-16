@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import site.ssanta.santa.api.appointment.domain.Appointment;
 import site.ssanta.santa.api.appointment.dto.MakeAppointmentRequestDto;
 import site.ssanta.santa.api.appointment.repository.AppointmentRepository;
+import site.ssanta.santa.api.mountain.domain.Mountain;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,10 +19,12 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
 
     @Transactional
-    public Appointment makeAppointment(Long userId, MakeAppointmentRequestDto dto) {
+    public Appointment makeAppointment(Long userId, MakeAppointmentRequestDto dto, Mountain mountain) {
         return appointmentRepository.save(Appointment.builder()
                 .groupId(dto.getGroupId())
                 .adminId(userId)
+                .mountainId(mountain.getId())
+                .mountainName(mountain.getName())
                 .meetAt(dto.getDate())
                 .build());
     }

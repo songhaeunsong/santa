@@ -6,10 +6,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Immutable;
 
 @Entity
+@Getter
 @Immutable
 @AllArgsConstructor
 @Table(name = "mountains")

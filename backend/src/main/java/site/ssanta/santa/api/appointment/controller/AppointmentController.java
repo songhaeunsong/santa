@@ -22,6 +22,8 @@ import site.ssanta.santa.api.appointment_participant.service.AppointmentParticip
 import site.ssanta.santa.api.group_participant.domain.Role;
 import site.ssanta.santa.api.member.domain.Member;
 import site.ssanta.santa.api.member.service.MemberService;
+import site.ssanta.santa.api.mountain.domain.Mountain;
+import site.ssanta.santa.api.mountain.service.MountainService;
 import site.ssanta.santa.common.exception.ExceptionResponse;
 import site.ssanta.santa.common.jwt.JwtUtil;
 
@@ -38,6 +40,7 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
     private final AppointmentParticipantService appointmentParticipantService;
     private final MemberService memberService;
+    private final MountainService mountainService;
     private final JwtUtil jwtUtil;
 
     @PostMapping()
@@ -51,7 +54,8 @@ public class AppointmentController {
     })
     public ResponseEntity<?> makeAppointment(@RequestAttribute("userId") Long userId,
                                              @RequestBody MakeAppointmentRequestDto dto) {
-        Appointment appointment = appointmentService.makeAppointment(userId, dto);
+        Mountain mountain = mountainService.findById(dto.getMountainId());
+        Appointment appointment = appointmentService.makeAppointment(userId, dto, mountain);
         Member user = memberService.getMemberById(userId);
         appointmentParticipantService.join(appointment, user, Role.ADMIN);
         return ResponseEntity.created(null).build();

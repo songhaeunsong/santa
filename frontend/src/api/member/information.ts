@@ -1,15 +1,6 @@
 import { useQuery } from '@tanstack/vue-query';
 import apiClient from '../apiClient';
-
-type tierType = 'BRONZE' | 'SILVER' | 'GOLD' | 'DIAMOND' | 'CHALLENGER';
-
-interface Member {
-  exp: number;
-  profileUrl: string;
-  tier: tierType;
-  nickname: string;
-  email: string;
-}
+import { Member } from '../../types/types';
 
 const getMemberInformation = async (): Promise<Member> => {
   return (await apiClient.get<Member>('member/mypage')).data;

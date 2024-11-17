@@ -86,4 +86,8 @@ public class MemberService {
         return memberRepository.findById(userId)
                 .orElseThrow();
     }
+
+    public Member getMountainLikes(Long userId) {
+        return memberRepository.findWithMountainLikesById(userId);
+    }
 }

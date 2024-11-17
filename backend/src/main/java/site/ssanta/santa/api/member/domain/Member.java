@@ -2,8 +2,11 @@ package site.ssanta.santa.api.member.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import site.ssanta.santa.api.mountain_complete.domain.MountainComplete;
+import site.ssanta.santa.api.mountain_like.domain.MountainLike;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,6 +38,12 @@ public class Member {
 
     @Column(name = "delete_at")
     private Date deleteAt;
+
+    @OneToMany(mappedBy = "member")
+    private List<MountainLike> mountainLikes;
+
+    @OneToMany(mappedBy = "member")
+    private List<MountainComplete> mountainCompletes;
 
     public void updateNickname(String nickname) {
         if (nickname != null) {

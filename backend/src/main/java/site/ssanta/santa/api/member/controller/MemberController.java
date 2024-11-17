@@ -12,13 +12,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import site.ssanta.santa.api.member.domain.Member;
 import site.ssanta.santa.api.member.dto.*;
 import site.ssanta.santa.api.member.service.OauthService;
 import site.ssanta.santa.api.member.service.MemberService;
+import site.ssanta.santa.api.mountain_like.dto.MountainLikeResponseDto;
+import site.ssanta.santa.api.mountain_like.dto.MountainLikeVO;
 import site.ssanta.santa.common.exception.ExceptionResponse;
 import site.ssanta.santa.common.jwt.JwtUtil;
 import site.ssanta.santa.common.jwt.exception.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -248,6 +252,31 @@ public class MemberController {
     })
     public ResponseEntity<?> getActive() {
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/like")
+    @SecurityRequirement(name = "ACCESS")
+    @Operation(summary = "관심 산 조회", description = "사용자가 관심 등록한 관심 산 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 완료",
+            content = @Content(schema = @Schema(implementation = MountainLikeResponseDto.class))),
+            @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+                    ))
+    })
+    public ResponseEntity<?> getLikeMountains(@RequestAttribute("userId") Long userId) {
+        Member member = memberService.getMountainLikes(userId);
+        List<MountainLikeVO> mountainLikeList = member.getMountainLikes().stream()
+                .map(mountainLike -> MountainLikeVO.builder()
+                        .id(mountainLike.getId())
+                        .mountainId(mountainLike.getMountain().getId())
+                        .mountainName(mountainLike.getMountain().getName())
+                        .mountainImage(mountainLike.getMountain().getImage())
+                        .build())
+                .toList();
+        MountainLikeResponseDto result = new MountainLikeResponseDto(mountainLikeList);
+
+        return ResponseEntity.ok().body(result);
     }
 }
 

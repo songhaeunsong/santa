@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import site.ssanta.santa.api.mountain.dto.MountainFilterResponseDto;
 import site.ssanta.santa.api.mountain.dto.MountainVO;
 import site.ssanta.santa.api.mountain.service.MountainService;
 import site.ssanta.santa.api.mountain_like.service.MountainLikeService;
+import site.ssanta.santa.common.exception.ExceptionResponse;
 
 import java.util.List;
 
@@ -45,6 +47,13 @@ public class MountainController {
     @PostMapping("/like")
     @SecurityRequirement(name = "ACCESS")
     @Operation(summary = "관심 산 등록", description = "사용자가 관심 산을 등록")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "등록 완료"),
+            @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+            )),
+            @ApiResponse(responseCode = "404", description = "해당하는 산이 없는 경우")
+    })
     public ResponseEntity<?> likeMountain(@RequestAttribute("userId") Long userId,
                                           @RequestBody Long mountainId) {
         Member member = memberService.getMemberById(userId);

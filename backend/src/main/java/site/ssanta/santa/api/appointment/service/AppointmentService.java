@@ -62,4 +62,17 @@ public class AppointmentService {
         appointment.join();
         return appointment;
     }
+
+    @Transactional(readOnly = true)
+    public Appointment findById(Long appointmentId) {
+        return appointmentRepository.findById(appointmentId)
+                .orElseThrow();
+    }
+
+    @Transactional
+    public void deleteMember(Long appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow();
+        appointment.delete();
+    }
 }

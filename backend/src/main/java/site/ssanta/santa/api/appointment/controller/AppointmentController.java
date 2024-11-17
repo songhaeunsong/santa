@@ -131,4 +131,24 @@ public class AppointmentController {
 
         return ResponseEntity.created(null).build();
     }
+
+    @DeleteMapping()
+    @SecurityRequirement(name = "ACCESS")
+    @Operation(summary = "약속 탈퇴", description = "약속 탈퇴 요청")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "탈퇴 성공"),
+            @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+                    )),
+            @ApiResponse(responseCode = "404", description = "해당 약속이 없는 경우")
+    })
+    public ResponseEntity<?> deleteFromAppointment(@RequestAttribute("userId") Long userId,
+                                                   @RequestBody AppointmentDeleteRequestDto dto) {
+        Member member = memberService.getMemberById(userId);
+        Appointment appointment = appointmentService.findById(dto.getAppointmentId());
+        appointmentParticipantService.delete(member, appointment);
+        appointmentService.deleteMember(appointment.getId());
+
+        return ResponseEntity.created(null).build();
+    }
 }

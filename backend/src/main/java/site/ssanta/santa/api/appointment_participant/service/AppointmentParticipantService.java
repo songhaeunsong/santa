@@ -23,4 +23,8 @@ public class AppointmentParticipantService {
                 .role(role)
                 .build());
     }
+
+    public void delete(Member member, Appointment appointment) {
+        repository.deleteByAppointmentAndMember(appointment, member);
+    }
 }

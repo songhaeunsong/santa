@@ -11,6 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 public class MountainFilterResponseDto {
 
-    @ArraySchema(schema = @Schema(implementation = MountainVO.class))
-    private List<MountainVO> mountains;
+    @ArraySchema(schema = @Schema(implementation = MountainQueryResponseDto.class))
+    private List<MountainQueryResponseDto> mountains;
 }

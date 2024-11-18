@@ -1,14 +1,14 @@
 package site.ssanta.santa.api.mountain.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Immutable;
+import site.ssanta.santa.api.mountain_like.domain.MountainLike;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,4 +33,7 @@ public class Mountain {
     private String longitude;
 
     private String image;
+
+    @OneToMany(mappedBy = "mountain")
+    private List<MountainLike> mountainLikes;
 }

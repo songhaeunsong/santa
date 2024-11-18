@@ -15,6 +15,7 @@ import site.ssanta.santa.api.member.domain.Member;
 import site.ssanta.santa.api.member.service.MemberService;
 import site.ssanta.santa.api.mountain.domain.Mountain;
 import site.ssanta.santa.api.mountain.dto.MountainFilterResponseDto;
+import site.ssanta.santa.api.mountain.dto.MountainLikeRequestDto;
 import site.ssanta.santa.api.mountain.dto.MountainQueryResponseDto;
 import site.ssanta.santa.api.mountain.service.MountainService;
 import site.ssanta.santa.api.mountain_like.service.MountainLikeService;
@@ -82,10 +83,11 @@ public class MountainController {
             @ApiResponse(responseCode = "404", description = "해당하는 산이 없는 경우")
     })
     public ResponseEntity<?> likeMountain(@RequestAttribute("userId") Long userId,
-                                          @RequestBody Long mountainId) {
+                                          @RequestBody MountainLikeRequestDto dto) {
         Member member = memberService.getMemberById(userId);
-        Mountain mountain = mountainService.findById(mountainId);
+        Mountain mountain = mountainService.findById(dto.getMountainId());
         mountainLikeService.save(member, mountain);
+
         return ResponseEntity.created(null).build();
     }
 }

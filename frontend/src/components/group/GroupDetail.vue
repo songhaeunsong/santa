@@ -2,7 +2,7 @@
 import { useGetgroupDetail } from '../../api/group/group';
 
 import GroupMemberLink from './GroupMemberLink.vue';
-import GroupAppointment from './GroupAppointment.vue';
+import GroupAppointment from './appointment/GroupAppointment.vue';
 import BaseLoading from '../BaseLoading.vue';
 import BaseTag from '../BaseTag.vue';
 import GroupJoinModal from './GroupJoinModal.vue';
@@ -61,7 +61,9 @@ const { data: groupDetail, isError } = useGetgroupDetail(props.id);
       <li class="flex items-center gap-1 mt-10">
         <BaseTag tag-label="등산 약속" />
       </li>
-      <GroupAppointment />
+      <GroupAppointment
+        :group-id="groupDetail.id"
+        date="2024-11-30" />
     </ul>
   </div>
   <BaseLoading v-else />

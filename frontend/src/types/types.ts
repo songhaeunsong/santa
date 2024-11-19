@@ -34,11 +34,21 @@ export interface GroupDetail {
 
 export interface Appointment {
   id: number;
-  groupId: number;
-  mountainName: string;
-  mountainId: number;
-  countOfParticipant: number;
+  countOfMembers: number;
   meetAt: string;
+  mountainName: string;
+  isMember: boolean;
+  isAdmin: boolean;
+  members: [
+    {
+      id: number;
+      name: string;
+    }
+  ];
+}
+
+export interface Appointments {
+  appointments: Appointment[];
 }
 
 // member
@@ -51,4 +61,31 @@ export interface Member {
   tier: tierType;
   nickname: string;
   email: string;
+}
+
+export interface Mountain {
+  name: string;
+  id: number;
+  province: string;
+  city: string;
+  height: number;
+  isLiked: boolean;
+  latitude: string;
+  longitude: string;
+  image: string;
+}
+
+export interface Mountains {
+  mountains: Mountain[];
+}
+
+export interface MountainLike {
+  id: number;
+  mountainId: number;
+  mountainName: string;
+  mountainImage: string;
+}
+
+export interface MountainLikes {
+  mountainLikes: MountainLike[];
 }

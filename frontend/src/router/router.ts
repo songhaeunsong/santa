@@ -2,7 +2,6 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 import DefaultLayout from '../layouts/DefaultLayout.vue';
 import HomeView from '../views/HomeView.vue';
-import HikeView from '../views/HikeView.vue';
 import RankView from '../views/RankView.vue';
 import LoginView from '../views/LoginView.vue';
 import RedirectView from '../views/RedirectView.vue';
@@ -15,6 +14,8 @@ import GroupDetailView from '../views/GroupDetailView.vue';
 import ContentLayout from '../layouts/ContentLayout.vue';
 import { useAuth } from '../hooks/useAuth';
 import { getLoginStatus } from '../utils/loginUtil';
+import MountainView from '../views/MountainView.vue';
+import MountainDetailView from '../views/MountainDetailView.vue';
 
 const routes: readonly RouteRecordRaw[] = [
   {
@@ -24,9 +25,15 @@ const routes: readonly RouteRecordRaw[] = [
     meta: { publicPath: true }
   },
   {
-    path: '/hike',
+    path: '/mountain',
     component: DefaultLayout,
-    children: [{ path: '', component: HikeView }],
+    children: [{ path: '', component: MountainView }],
+    meta: { publicPath: false }
+  },
+  {
+    path: '/mountain/:id',
+    component: DefaultLayout,
+    children: [{ path: '', component: MountainDetailView }],
     meta: { publicPath: false }
   },
   {

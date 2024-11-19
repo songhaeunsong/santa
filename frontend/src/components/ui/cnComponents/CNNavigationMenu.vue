@@ -10,8 +10,8 @@ import {
 
 const components: { title: string; route: string; description: string }[] = [
   {
-    title: 'Hike',
-    route: '/hike',
+    title: 'Mountain',
+    route: '/mountain',
     description: '난이도 별, 위치 별 등산 보기'
   },
   {

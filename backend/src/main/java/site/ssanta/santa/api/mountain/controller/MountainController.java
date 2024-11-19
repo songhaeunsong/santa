@@ -22,6 +22,7 @@ import site.ssanta.santa.api.mountain_like.service.MountainLikeService;
 import site.ssanta.santa.common.exception.ExceptionResponse;
 import site.ssanta.santa.common.jwt.JwtUtil;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -59,8 +60,8 @@ public class MountainController {
                         .province(mountain.getProvince())
                         .city(mountain.getCity())
                         .height(mountain.getHeight())
-                        .latitude(mountain.getLatitude())
-                        .longitude(mountain.getLongitude())
+                        .latitude(new BigDecimal(mountain.getLatitude()))
+                        .longitude(new BigDecimal(mountain.getLongitude()))
                         .image(mountain.getImage())
                         .isLiked(mountain.getMountainLikes()
                                 .stream()

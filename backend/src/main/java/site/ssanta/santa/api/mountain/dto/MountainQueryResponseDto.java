@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -14,8 +16,8 @@ public class MountainQueryResponseDto {
     private String province;
     private String city;
     private Integer height;
-    private String latitude;
-    private String longitude;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
     private String image;
     private Boolean isLiked;
 }

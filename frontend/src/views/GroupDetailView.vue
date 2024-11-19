@@ -7,7 +7,7 @@ const groupId = route.params.id as string;
 
 <template>
   <div
-    class="w-[100%] px-[30px] lg:px-[300px] md:px-[100px] sm:px-[30px] py-[30px] flex flex-col justify-center items-center">
+    class="w-[100%] px-[30px] lg:px-[20%] md:px-[100px] sm:px-[30px] py-[30px] flex flex-col justify-center items-center">
     <GroupDetail :id="groupId" />
   </div>
 </template>

@@ -9,4 +9,11 @@
             AND mountain_id = #{mountainId}
         ) as exists_flag
     </select>
+
+    <delete id="deleteByUserIdAndMountainId">
+        DELETE
+        FROM mountain_likes
+        WHERE member_id = #{memberId}
+        AND mountain_id = #{mountainId}
+    </delete>
 </mapper>

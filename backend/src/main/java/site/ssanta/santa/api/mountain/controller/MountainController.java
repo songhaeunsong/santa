@@ -103,9 +103,7 @@ public class MountainController {
     })
     public ResponseEntity<?> unlikeMountain(@RequestAttribute("userId") Long userId,
                                           @RequestBody MountainLikeRequestDto dto) {
-        Member member = memberService.getMemberById(userId);
-        Mountain mountain = mountainService.findById(dto.getMountainId());
-        mountainLikeService.save(member, mountain);
+        mountainLikeService.delete(userId, dto.getMountainId());
 
         return ResponseEntity.created(null).build();
     }

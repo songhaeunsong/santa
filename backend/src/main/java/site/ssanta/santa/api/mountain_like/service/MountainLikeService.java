@@ -25,4 +25,11 @@ public class MountainLikeService {
                     .build());
         }
     }
+
+    @Transactional
+    public void delete(Long userId, Long mountainId) {
+        if (mountainLikeMapper.existsByMemberIdAndMountainId(userId, mountainId)) {
+            mountainLikeMapper.deleteByUserIdAndMountainId(userId, mountainId);
+        }
+    }
 }

@@ -26,7 +26,6 @@
     "vue3-spinners": "^1.2.2"
   },
   "devDependencies": {
-    "@types/axios": "^0.9.36",
     "@types/vue-router": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^8.12.2",
     "@typescript-eslint/parser": "^8.12.2",

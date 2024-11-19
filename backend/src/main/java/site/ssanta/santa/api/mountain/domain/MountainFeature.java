@@ -1,0 +1,21 @@
+package site.ssanta.santa.api.mountain.domain;
+
+import com.mongodb.annotations.Immutable;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Getter
+@Document
+@Immutable
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class MountainFeature {
+
+    @Id
+    private String id;
+    private FeatureAttributes attributes;
+    private FeatureGeometry geometry;
+    private String fileType;
+}

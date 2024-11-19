@@ -8,6 +8,9 @@ spring:
     name: santa
   profiles:
     active: ${SPRING_ENV:local}
+  data:
+    mongodb:
+      uri: ${MONGODB.URL}
 
 mybatis:
   mapper-locations: classpath:mappers/**/*.xml

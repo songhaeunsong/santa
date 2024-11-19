@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import site.ssanta.santa.api.member.domain.Member;
 import site.ssanta.santa.api.member.service.MemberService;
 import site.ssanta.santa.api.mountain.domain.Mountain;
+import site.ssanta.santa.api.mountain.domain.MountainFeature;
+import site.ssanta.santa.api.mountain.dto.MountainDto;
 import site.ssanta.santa.api.mountain.dto.MountainFilterResponseDto;
 import site.ssanta.santa.api.mountain.dto.MountainLikeRequestDto;
 import site.ssanta.santa.api.mountain.dto.MountainQueryResponseDto;
@@ -107,5 +109,23 @@ public class MountainController {
         mountainLikeService.delete(userId, dto.getMountainId());
 
         return ResponseEntity.created(null).build();
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<MountainDto> getMountainInfo(@RequestParam("mountainCode") String mountainCode) {
+        return ResponseEntity.ok()
+                .body(mountainService.getMountainInfo(mountainCode));
+    }
+
+    @GetMapping("/paths")
+    public ResponseEntity<List<MountainFeature>> getMountainPaths(@RequestParam("mountainCode") String mountainCode) {
+        return ResponseEntity.ok()
+                .body(mountainService.getMountainPaths(mountainCode));
+    }
+
+    @GetMapping("/spots")
+    public ResponseEntity<List<MountainFeature>> getMountainSpots(@RequestParam("mountainCode") String mountainCode) {
+        return ResponseEntity.ok()
+                .body(mountainService.getMountainSpots(mountainCode));
     }
 }

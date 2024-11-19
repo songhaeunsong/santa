@@ -73,6 +73,6 @@ public class AppointmentService {
     public void deleteMember(Long appointmentId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow();
-        appointment.delete();
+        appointmentRepository.delete(appointment);
     }
 }

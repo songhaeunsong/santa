@@ -24,6 +24,7 @@ public class AppointmentParticipantService {
                 .build());
     }
 
+    @Transactional
     public void delete(Member member, Appointment appointment) {
         repository.deleteByAppointmentAndMember(appointment, member);
     }

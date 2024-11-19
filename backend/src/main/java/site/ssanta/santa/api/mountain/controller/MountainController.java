@@ -90,4 +90,23 @@ public class MountainController {
 
         return ResponseEntity.created(null).build();
     }
+
+    @DeleteMapping("/like")
+    @SecurityRequirement(name = "ACCESS")
+    @Operation(summary = "관심 산 등록 해제", description = "사용자가 관심 산을 등록 해제")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "해제 완료"),
+            @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+                    )),
+            @ApiResponse(responseCode = "404", description = "좋아요한 적이 없는 경우")
+    })
+    public ResponseEntity<?> unlikeMountain(@RequestAttribute("userId") Long userId,
+                                          @RequestBody MountainLikeRequestDto dto) {
+        Member member = memberService.getMemberById(userId);
+        Mountain mountain = mountainService.findById(dto.getMountainId());
+        mountainLikeService.save(member, mountain);
+
+        return ResponseEntity.created(null).build();
+    }
 }

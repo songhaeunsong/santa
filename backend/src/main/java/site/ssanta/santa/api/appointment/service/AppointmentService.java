@@ -73,6 +73,20 @@ public class AppointmentService {
     public void deleteMember(Long appointmentId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow();
-        appointmentRepository.delete(appointment);
+        appointment.delete();
+
+        if (appointment.getCountOfMembers().equals(0L)) {
+            appointmentRepository.delete(appointment);
+        }
+    }
+
+    @Transactional
+    public void delete(Long appointmentId, Long userId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow();
+
+        if (appointment.getAdminId().equals(userId)) {
+            appointmentRepository.deleteById(appointmentId);
+        }
     }
 }

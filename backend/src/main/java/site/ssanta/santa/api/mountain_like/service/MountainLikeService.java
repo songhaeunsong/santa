@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import site.ssanta.santa.api.member.domain.Member;
 import site.ssanta.santa.api.mountain.domain.Mountain;
 import site.ssanta.santa.api.mountain_like.domain.MountainLike;
+import site.ssanta.santa.api.mountain_like.repository.MountainLikeMapper;
 import site.ssanta.santa.api.mountain_like.repository.MountainLikeRepository;
 
 @Service
@@ -13,12 +14,15 @@ import site.ssanta.santa.api.mountain_like.repository.MountainLikeRepository;
 public class MountainLikeService {
 
     private final MountainLikeRepository mountainLikeRepository;
+    private final MountainLikeMapper mountainLikeMapper;
 
     @Transactional
     public void save(Member member, Mountain mountain) {
-        mountainLikeRepository.save(MountainLike.builder()
-                .member(member)
-                .mountain(mountain)
-                .build());
+        if (!mountainLikeMapper.existsByMemberIdAndMountainId(member.getId(), mountain.getId())) {
+            mountainLikeRepository.save(MountainLike.builder()
+                    .member(member)
+                    .mountain(mountain)
+                    .build());
+        }
     }
 }

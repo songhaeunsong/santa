@@ -6,16 +6,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Getter
-@Document
+@Document(collection = "mountain_paths")
 @Immutable
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MountainFeature {
+public class MountainPath {
 
     @Id
     private String id;
     private FeatureAttributes attributes;
     private FeatureGeometry geometry;
+
+    @Field("file_type")
     private String fileType;
 }

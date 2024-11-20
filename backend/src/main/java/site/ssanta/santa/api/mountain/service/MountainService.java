@@ -1,10 +1,12 @@
 package site.ssanta.santa.api.mountain.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import site.ssanta.santa.api.mountain.domain.Mountain;
-import site.ssanta.santa.api.mountain.domain.MountainFeature;
+import site.ssanta.santa.api.mountain.domain.MountainPath;
 import site.ssanta.santa.api.mountain.domain.MountainInfo;
+import site.ssanta.santa.api.mountain.domain.MountainSpot;
 import site.ssanta.santa.api.mountain.dto.MountainDto;
 import site.ssanta.santa.api.mountain.repository.MountainFeatureRepository;
 import site.ssanta.santa.api.mountain.repository.MountainInfoRepository;
@@ -12,6 +14,7 @@ import site.ssanta.santa.api.mountain.repository.MountainRepository;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MountainService {
@@ -34,11 +37,11 @@ public class MountainService {
         MountainInfo mountainInfo = mountainInfoRepository.findByMountainCode(mountainCode)
                 .orElseThrow();
 
-        List<MountainFeature> paths = mountainFeatureRepository
-                .findByFileTypeAndAttributesMountainCode("path", mountainCode);
+        List<MountainPath> paths = mountainFeatureRepository
+                .findMountainPathsByAttributes_MountainCode(mountainCode);
 
-        List<MountainFeature> spots = mountainFeatureRepository
-                .findByFileTypeAndAttributesMountainCode("spot", mountainCode);
+        List<MountainSpot> spots = mountainFeatureRepository
+                .findMountainSpotsByAttributes_MountainCode(mountainCode);
 
         return MountainDto.builder()
                 .info(mountainInfo)
@@ -47,13 +50,13 @@ public class MountainService {
                 .build();
     }
 
-    public List<MountainFeature> getMountainPaths(String mountainCode) {
+    public List<MountainPath> getMountainPaths(String mountainCode) {
         return mountainFeatureRepository
-                .findByFileTypeAndAttributesMountainCode("path", mountainCode);
+                .findMountainPathsByAttributes_MountainCode(mountainCode);
     }
 
-    public List<MountainFeature> getMountainSpots(String mountainCode) {
+    public List<MountainSpot> getMountainSpots(String mountainCode) {
         return mountainFeatureRepository
-                .findByFileTypeAndAttributesMountainCode("spot", mountainCode);
+                .findMountainSpotsByAttributes_MountainCode(mountainCode);
     }
 }

@@ -1,8 +1,9 @@
 package site.ssanta.santa.api.mountain.dto;
 
 import lombok.*;
-import site.ssanta.santa.api.mountain.domain.MountainFeature;
+import site.ssanta.santa.api.mountain.domain.MountainPath;
 import site.ssanta.santa.api.mountain.domain.MountainInfo;
+import site.ssanta.santa.api.mountain.domain.MountainSpot;
 
 import java.util.List;
 
@@ -13,6 +14,6 @@ import java.util.List;
 public class MountainDto {
 
     private MountainInfo info;
-    private List<MountainFeature> paths;
-    private List<MountainFeature> spots;
+    private List<MountainPath> paths;
+    private List<MountainSpot> spots;
 }

@@ -10,13 +10,13 @@ import site.ssanta.santa.api.mountain_like.repository.MountainLikeMapper;
 import site.ssanta.santa.api.mountain_like.repository.MountainLikeRepository;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MountainLikeService {
 
     private final MountainLikeRepository mountainLikeRepository;
     private final MountainLikeMapper mountainLikeMapper;
 
-    @Transactional
     public void save(Member member, Mountain mountain) {
         if (!mountainLikeMapper.existsByMemberIdAndMountainId(member.getId(), mountain.getId())) {
             mountainLikeRepository.save(MountainLike.builder()
@@ -26,10 +26,9 @@ public class MountainLikeService {
         }
     }
 
-    @Transactional
-    public void delete(Long userId, Long mountainId) {
-        if (mountainLikeMapper.existsByMemberIdAndMountainId(userId, mountainId)) {
-            mountainLikeMapper.deleteByUserIdAndMountainId(userId, mountainId);
+    public void delete(Long memberId, Long mountainId) {
+        if (mountainLikeMapper.existsByMemberIdAndMountainId(memberId, mountainId)) {
+            mountainLikeMapper.deleteByMemberIdAndMountainId(memberId, mountainId);
         }
     }
 }

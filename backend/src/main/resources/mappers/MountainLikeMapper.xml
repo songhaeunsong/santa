@@ -11,7 +11,7 @@
         ) as exists_flag
     </select>
 
-    <delete id="deleteByUserIdAndMountainId">
+    <delete id="deleteByMemberIdAndMountainId">
         DELETE
         FROM mountain_likes
         WHERE member_id = #{memberId}

@@ -16,7 +16,7 @@ import site.ssanta.santa.api.member.service.MemberService;
 import site.ssanta.santa.api.mountain.domain.Mountain;
 import site.ssanta.santa.api.mountain.domain.MountainPath;
 import site.ssanta.santa.api.mountain.domain.MountainSpot;
-import site.ssanta.santa.api.mountain.dto.MountainDto;
+import site.ssanta.santa.api.mountain.dto.MountainDetailDto;
 import site.ssanta.santa.api.mountain.dto.MountainFilterResponseDto;
 import site.ssanta.santa.api.mountain.dto.MountainLikeRequestDto;
 import site.ssanta.santa.api.mountain.dto.MountainQueryResponseDto;
@@ -106,16 +106,32 @@ public class MountainController {
             @ApiResponse(responseCode = "404", description = "좋아요한 적이 없는 경우")
     })
     public ResponseEntity<?> unlikeMountain(@RequestAttribute("userId") Long userId,
-                                          @RequestBody MountainLikeRequestDto dto) {
+                                            @RequestBody MountainLikeRequestDto dto) {
         mountainLikeService.delete(userId, dto.getMountainId());
 
         return ResponseEntity.created(null).build();
     }
 
     @GetMapping("/detail")
-    public ResponseEntity<MountainDto> getMountainInfo(@RequestParam("mountainCode") String mountainCode) {
+    @Operation(summary = "산 상세 정보", description = "산의 상세 정보 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                    content = @Content(schema = @Schema(implementation = MountainDetailDto.class))),
+            @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+                    )),
+            @ApiResponse(responseCode = "404", description = "코드에 해당하는 산이 없는 경우")
+    })
+    public ResponseEntity<MountainDetailDto> getMountainInfo(@CookieValue(value = "access_token", required = false) String accessToken,
+                                                             @RequestParam("mountainCode") String mountainCode) {
+        Long userId = -1L;
+
+        if (accessToken != null) {
+            userId = jwtUtil.getUserId(accessToken);
+        }
+
         return ResponseEntity.ok()
-                .body(mountainService.getMountainInfo(mountainCode));
+                .body(mountainService.getMountainInfo(mountainCode, userId));
     }
 
     @GetMapping("/paths")

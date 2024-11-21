@@ -1,9 +1,10 @@
 package site.ssanta.santa.api.mountain.dto;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import site.ssanta.santa.api.mountain.domain.MountainPath;
 import site.ssanta.santa.api.mountain.domain.MountainInfo;
-import site.ssanta.santa.api.mountain.domain.MountainSpot;
 
 import java.util.List;
 
@@ -11,9 +12,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class MountainDto {
+public class MountainDetailDto {
 
     private MountainInfo info;
+
+    @ArraySchema(schema = @Schema(implementation = MountainPath.class))
     private List<MountainPath> paths;
-    private List<MountainSpot> spots;
+    private MountainQueryResponseDto mountainInfo;
 }

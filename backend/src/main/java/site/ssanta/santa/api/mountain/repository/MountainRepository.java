@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import site.ssanta.santa.api.mountain.domain.Mountain;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MountainRepository extends JpaRepository<Mountain, Long> {
 
@@ -15,4 +16,9 @@ public interface MountainRepository extends JpaRepository<Mountain, Long> {
             "AND m.city LIKE CONCAT('%', :city, '%')")
     List<Mountain> findAllByProvinceContainingAndCityContaining(@Param("province") String province,
                                                                 @Param("city") String city);
+
+    @Query("SELECT m FROM Mountain m " +
+            "LEFT JOIN FETCH m.mountainLikes ml " +
+            "WHERE m.id = :id")
+    Optional<Mountain> findWithLikesById(@Param("id") Long mountainId);
 }

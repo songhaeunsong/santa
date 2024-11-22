@@ -11,8 +11,8 @@ public interface MountainLikeMapper {
             @Param("mountainId") Long mountainId
     );
 
-    void deleteByUserIdAndMountainId(
-            @Param("userId") Long userId,
+    void deleteByMemberIdAndMountainId(
+            @Param("memberId") Long memberId,
             @Param("mountainId") Long mountainId
     );
 }

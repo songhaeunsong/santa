@@ -30,8 +30,8 @@ public class TouristAttractionController {
     @ApiResponse(responseCode = "200", description = "해당하는 정보 반환",
     content = @Content(schema = @Schema(implementation = TouristQueryResponseDto.class)))
     public ResponseEntity<?> getAttractionList(@RequestParam("type") Integer type,
-                                               @RequestParam("province") String province,
-                                               @RequestParam("city") String city) {
+                                               @RequestParam("province") List<String> province,
+                                               @RequestParam("city") List<String> city) {
         List<TouristAttractionVO> list = touristAttractionService.findByConditions(type, province, city);
         TouristQueryResponseDto dto = new TouristQueryResponseDto(list);
 

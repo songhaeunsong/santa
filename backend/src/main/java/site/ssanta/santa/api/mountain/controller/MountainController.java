@@ -95,7 +95,6 @@ public class MountainController {
         Member member = memberService.getMemberById(userId);
         Mountain mountain = mountainService.findById(dto.getMountainId());
         mountainLikeService.save(member, mountain);
-
         return ResponseEntity.created(null).build();
     }
 

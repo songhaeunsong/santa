@@ -21,6 +21,9 @@ import site.ssanta.santa.api.mountain.dto.MountainFilterResponseDto;
 import site.ssanta.santa.api.mountain.dto.MountainLikeRequestDto;
 import site.ssanta.santa.api.mountain.dto.MountainQueryResponseDto;
 import site.ssanta.santa.api.mountain.service.MountainService;
+import site.ssanta.santa.api.mountain_complete.dto.MountainCompleteResponseDto;
+import site.ssanta.santa.api.mountain_complete.dto.MountainCompleteVO;
+import site.ssanta.santa.api.mountain_complete.service.MountainCompleteService;
 import site.ssanta.santa.api.mountain_like.service.MountainLikeService;
 import site.ssanta.santa.common.exception.ExceptionResponse;
 import site.ssanta.santa.common.jwt.JwtUtil;
@@ -38,6 +41,7 @@ public class MountainController {
     private final MountainService mountainService;
     private final MemberService memberService;
     private final MountainLikeService mountainLikeService;
+    private final MountainCompleteService mountainCompleteService;
     private final JwtUtil jwtUtil;
 
     @GetMapping()
@@ -144,5 +148,37 @@ public class MountainController {
     public ResponseEntity<List<MountainSpot>> getMountainSpots(@RequestParam("mountainCode") String mountainCode) {
         return ResponseEntity.ok()
                 .body(mountainService.getMountainSpots(mountainCode));
+    }
+
+    @GetMapping("/complete")
+    @Operation(summary = "완등 정보 조회", description = "사용자가 완등한 산 정보 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사용자가 완등한 산",
+                    content = @Content(schema = @Schema(implementation = MountainCompleteResponseDto.class))),
+            @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+                    ))
+    })
+    public ResponseEntity<?> findCompleteById(@RequestAttribute("userId") Long memberId) {
+        Member member = memberService.getMemberById(memberId);
+        List<MountainCompleteVO> completes = mountainCompleteService.getCompleteByMember(member);
+        MountainCompleteResponseDto response = new MountainCompleteResponseDto(completes);
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/complete")
+    @Operation(summary = "완등", description = "완등 했을 떄")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "완등 했을 때",
+                    content = @Content(schema = @Schema(implementation = MountainCompleteResponseDto.class))),
+            @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
+                    ))
+    })
+    public ResponseEntity<?> complete(@RequestAttribute("userId") Long memberId) {
+        Member member = memberService.getMemberById(memberId);
+
+        return ResponseEntity.created(null).build();
     }
 }

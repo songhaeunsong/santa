@@ -50,4 +50,34 @@ public class Member {
             this.nickname = nickname;
         }
     }
+
+    public void updateExp(int exp) {
+        long newExp = this.exp + exp;
+
+        if (newExp >= 100) {
+            upgradeTier();
+            this.exp = newExp % 100;
+        } else {
+            this.exp = newExp;
+        }
+    }
+
+    private void upgradeTier() {
+        switch (this.tier) {
+            case BRONZE:
+                this.tier = Tier.SILVER;
+                break;
+            case SILVER:
+                this.tier = Tier.GOLD;
+                break;
+            case GOLD:
+                this.tier = Tier.DIAMOND;
+                break;
+            case DIAMOND:
+                this.tier = Tier.CHALLENGER;
+                break;
+            case CHALLENGER:
+                break;
+        }
+    }
 }

@@ -11,17 +11,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.ssanta.santa.api.group.service.GroupService;
+import site.ssanta.santa.api.group_participant.service.GroupParticipantService;
 import site.ssanta.santa.api.member.domain.Member;
 import site.ssanta.santa.api.member.service.MemberService;
 import site.ssanta.santa.api.mountain.domain.Mountain;
 import site.ssanta.santa.api.mountain.domain.MountainPath;
 import site.ssanta.santa.api.mountain.domain.MountainSpot;
-import site.ssanta.santa.api.mountain.dto.MountainDetailDto;
-import site.ssanta.santa.api.mountain.dto.MountainFilterResponseDto;
-import site.ssanta.santa.api.mountain.dto.MountainLikeRequestDto;
-import site.ssanta.santa.api.mountain.dto.MountainQueryResponseDto;
+import site.ssanta.santa.api.mountain.dto.*;
 import site.ssanta.santa.api.mountain.service.MountainService;
-import site.ssanta.santa.api.mountain_complete.dto.MountainCompleteResponseDto;
+import site.ssanta.santa.api.mountain.util.MountainExpCalculator;
+import site.ssanta.santa.api.mountain_complete.dto.MountainCompleteQueryResponseDto;
 import site.ssanta.santa.api.mountain_complete.dto.MountainCompleteVO;
 import site.ssanta.santa.api.mountain_complete.service.MountainCompleteService;
 import site.ssanta.santa.api.mountain_like.service.MountainLikeService;
@@ -42,7 +42,10 @@ public class MountainController {
     private final MemberService memberService;
     private final MountainLikeService mountainLikeService;
     private final MountainCompleteService mountainCompleteService;
+    private final MountainExpCalculator expCalculator;
     private final JwtUtil jwtUtil;
+    private final GroupParticipantService groupParticipantService;
+    private final GroupService groupService;
 
     @GetMapping()
     @Operation(summary = "산 정보 조회", description = "조건에 맞는 산 정보 조회")
@@ -153,7 +156,7 @@ public class MountainController {
     @Operation(summary = "완등 정보 조회", description = "사용자가 완등한 산 정보 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "사용자가 완등한 산",
-                    content = @Content(schema = @Schema(implementation = MountainCompleteResponseDto.class))),
+                    content = @Content(schema = @Schema(implementation = MountainCompleteQueryResponseDto.class))),
             @ApiResponse(responseCode = "401", description = "access token이 만료된 경우",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
                     ))
@@ -161,7 +164,7 @@ public class MountainController {
     public ResponseEntity<?> findCompleteById(@RequestAttribute("userId") Long memberId) {
         Member member = memberService.getMemberById(memberId);
         List<MountainCompleteVO> completes = mountainCompleteService.getCompleteByMember(member);
-        MountainCompleteResponseDto response = new MountainCompleteResponseDto(completes);
+        MountainCompleteQueryResponseDto response = new MountainCompleteQueryResponseDto(completes);
 
         return ResponseEntity.ok().body(response);
     }
@@ -175,9 +178,24 @@ public class MountainController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)
                     ))
     })
-    public ResponseEntity<?> complete(@RequestAttribute("userId") Long memberId) {
+    public ResponseEntity<?> complete(@RequestAttribute("userId") Long memberId,
+                                      @RequestBody MountainLikeRequestDto dto) {
         Member member = memberService.getMemberById(memberId);
+        Mountain mountain = mountainService.findById(dto.getMountainId());
+        boolean result = mountainCompleteService.save(member, mountain);
+        MountainCompleteResponseDto response;
 
-        return ResponseEntity.created(null).build();
+        if (result) {
+            int exp = expCalculator.calculateExp(mountain.getHeight());
+            memberService.updateExp(member, exp);
+            groupParticipantService.findAllByMemberId(memberId)
+                    .forEach(groupParticipant ->
+                            groupService.updateExp(groupParticipant.getGroupId(), exp));
+            response = new MountainCompleteResponseDto(exp);
+        } else {
+            response = new MountainCompleteResponseDto(0);
+        }
+
+        return ResponseEntity.created(null).body(response);
     }
 }

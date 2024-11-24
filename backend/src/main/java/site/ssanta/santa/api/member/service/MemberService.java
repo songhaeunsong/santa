@@ -90,4 +90,9 @@ public class MemberService {
     public Member getMountainLikes(Long userId) {
         return memberRepository.findWithMountainLikesById(userId);
     }
+
+    @Transactional
+    public void updateExp(Member member, int exp) {
+        member.updateExp(exp);
+    }
 }

@@ -51,4 +51,10 @@ public class GroupService {
 
         group.joinMember(member);
     }
+
+    @Transactional
+    public void updateExp(Long groupId, int exp) {
+        groupRepository.findById(groupId)
+                .ifPresent(g -> g.updateExp(exp));
+    }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class MountainCompleteResponseDto {
+public class MountainCompleteQueryResponseDto {
 
     @ArraySchema(schema = @Schema(implementation = MountainCompleteVO.class))
     List<MountainCompleteVO> completes;

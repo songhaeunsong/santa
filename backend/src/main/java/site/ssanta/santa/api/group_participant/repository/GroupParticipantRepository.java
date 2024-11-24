@@ -9,4 +9,6 @@ import java.util.List;
 public interface GroupParticipantRepository extends JpaRepository<GroupParticipant, Long> {
 
     List<ParticipantVO> findAllByGroupId(Long groupId);
+
+    List<GroupParticipant> findAllByMemberId(Long memberId);
 }

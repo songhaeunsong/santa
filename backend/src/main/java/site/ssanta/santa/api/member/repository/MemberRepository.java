@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import site.ssanta.santa.api.member.domain.Member;
 import site.ssanta.santa.api.member.dto.MemberInfoVO;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -21,4 +22,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "LEFT JOIN FETCH ml.mountain " +
             "WHERE m.id = :id")
     Member findWithMountainLikesById(@Param("id") Long userId);
+
+    List<MemberInfoVO> findAllByOrderByTierDescExpDesc();
 }

@@ -12,6 +12,7 @@ import site.ssanta.santa.common.jwt.exception.JWTErrorCode;
 import site.ssanta.santa.common.jwt.exception.MemberNotFoundException;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -94,5 +95,10 @@ public class MemberService {
     @Transactional
     public void updateExp(Member member, int exp) {
         member.updateExp(exp);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberInfoVO> getMemberRank() {
+        return memberRepository.findAllByOrderByTierDescExpDesc();
     }
 }

@@ -57,4 +57,9 @@ public class GroupService {
         groupRepository.findById(groupId)
                 .ifPresent(g -> g.updateExp(exp));
     }
+
+    @Transactional(readOnly = true)
+    public List<GroupVO> getGroupRank() {
+        return groupRepository.findAllByOrderByExpDescCreateAtDesc();
+    }
 }

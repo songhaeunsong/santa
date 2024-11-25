@@ -16,6 +16,7 @@ import site.ssanta.santa.api.member.domain.Member;
 import site.ssanta.santa.api.member.dto.*;
 import site.ssanta.santa.api.member.service.OauthService;
 import site.ssanta.santa.api.member.service.MemberService;
+import site.ssanta.santa.api.mountain_complete.dto.MountainCompleteVO;
 import site.ssanta.santa.api.mountain_like.dto.MountainLikeResponseDto;
 import site.ssanta.santa.api.mountain_like.dto.MountainLikeVO;
 import site.ssanta.santa.common.exception.ExceptionResponse;
@@ -121,7 +122,18 @@ public class MemberController {
         }
 
         MemberInfoVO memberInfo = memberService.getUserInfo(userId);
+        Member member = memberService.findWithCompletesById(userId);
+        List<MountainCompleteVO> completes = member.getMountainCompletes().stream()
+                .map(mountainComplete -> MountainCompleteVO.builder()
+                        .id(mountainComplete.getId())
+                        .mountainId(mountainComplete.getMountain().getId())
+                        .mountainName(mountainComplete.getMountain().getName())
+                        .mountainImage(mountainComplete.getMountain().getImage())
+                        .build())
+                .toList();
+
         MemberProfileResponseDto result = MemberProfileResponseDto.builder()
+                .completes(completes)
                 .exp(memberInfo.getExp())
                 .tier(memberInfo.getTier())
                 .email(memberInfo.getEmail())

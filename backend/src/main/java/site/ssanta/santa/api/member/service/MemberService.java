@@ -101,4 +101,8 @@ public class MemberService {
     public List<MemberInfoVO> getMemberRank() {
         return memberRepository.findAllByOrderByTierDescExpDesc();
     }
+
+    public Member findWithCompletesById(Long userId) {
+        return memberRepository.findWithMountainCompletesById(userId);
+    }
 }

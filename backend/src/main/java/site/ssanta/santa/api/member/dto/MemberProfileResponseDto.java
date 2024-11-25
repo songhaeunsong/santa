@@ -1,7 +1,12 @@
 package site.ssanta.santa.api.member.dto;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import site.ssanta.santa.api.member.domain.Tier;
+import site.ssanta.santa.api.mountain_complete.dto.MountainCompleteVO;
+
+import java.util.List;
 
 @Getter
 @Builder
@@ -15,5 +20,7 @@ public class MemberProfileResponseDto {
     private Tier tier;
     private Long exp;
     private Boolean isSelf;
-    // TODO: 완등 정보
+
+    @ArraySchema(schema = @Schema(implementation = MountainCompleteVO.class))
+    private List<MountainCompleteVO> completes;
 }

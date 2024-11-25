@@ -24,4 +24,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findWithMountainLikesById(@Param("id") Long userId);
 
     List<MemberInfoVO> findAllByOrderByTierDescExpDesc();
+
+    @Query("SELECT m FROM Member m " +
+            "LEFT JOIN FETCH m.mountainCompletes mc " +
+            "LEFT JOIN FETCH mc.mountain " +
+            "WHERE m.id = :id")
+    Member findWithMountainCompletesById(@Param("id") Long userId);
 }

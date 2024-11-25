@@ -21,6 +21,7 @@ import site.ssanta.santa.api.mountain.domain.MountainSpot;
 import site.ssanta.santa.api.mountain.dto.*;
 import site.ssanta.santa.api.mountain.service.MountainService;
 import site.ssanta.santa.api.mountain.util.MountainExpCalculator;
+import site.ssanta.santa.api.mountain_complete.domain.MountainComplete;
 import site.ssanta.santa.api.mountain_complete.dto.MountainCompleteQueryResponseDto;
 import site.ssanta.santa.api.mountain_complete.dto.MountainCompleteVO;
 import site.ssanta.santa.api.mountain_complete.service.MountainCompleteService;
@@ -42,6 +43,7 @@ public class MountainController {
     private final MemberService memberService;
     private final MountainLikeService mountainLikeService;
     private final MountainCompleteService mountainCompleteService;
+//    private final MountainRAGService mountainRAGService;
     private final MountainExpCalculator expCalculator;
     private final JwtUtil jwtUtil;
     private final GroupParticipantService groupParticipantService;
@@ -136,8 +138,13 @@ public class MountainController {
             userId = jwtUtil.getUserId(accessToken);
         }
 
+        MountainDetailDto response = mountainService.getMountainInfo(mountainCode, userId);
+        MountainComplete mountainComplete = mountainCompleteService
+                .findByMountainIdAndMemberId(response.getMountainInfo().getId(), userId);
+        response.setIsCompletedToday(mountainComplete != null && mountainCompleteService.checkToday(mountainComplete));
+
         return ResponseEntity.ok()
-                .body(mountainService.getMountainInfo(mountainCode, userId));
+                .body(response);
     }
 
     @GetMapping("/paths")
@@ -198,4 +205,10 @@ public class MountainController {
 
         return ResponseEntity.created(null).body(response);
     }
+
+//    @PostMapping("/recommend")
+//    public ResponseEntity<RouteRecommendation> recommendRoute(@RequestBody RouteRequest request) {
+//        return ResponseEntity.ok()
+//                        .body(mountainRAGService.recommendRoute(request));
+//    }
 }

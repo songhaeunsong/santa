@@ -19,4 +19,7 @@ public class MountainDetailDto {
     @ArraySchema(schema = @Schema(implementation = MountainPath.class))
     private List<MountainPath> paths;
     private MountainQueryResponseDto mountainInfo;
+
+    @Setter
+    private Boolean isCompletedToday;
 }

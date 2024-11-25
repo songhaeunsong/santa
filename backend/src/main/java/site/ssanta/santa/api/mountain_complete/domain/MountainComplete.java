@@ -30,4 +30,11 @@ public class MountainComplete {
     @Builder.Default
     @Column(name = "create_at")
     private Date createAt = new Date();
+
+    @Column(name = "update_at")
+    private Date updateAt;
+
+    public void setUpdate() {
+        this.updateAt = new Date();
+    }
 }

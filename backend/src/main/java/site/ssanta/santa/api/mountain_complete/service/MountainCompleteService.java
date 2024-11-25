@@ -42,11 +42,26 @@ public class MountainCompleteService {
         }
 
         MountainComplete mountainComplete = mountainCompleteRepository.findByMemberAndMountain(member, mountain);
+        if (!checkToday(mountainComplete)) {
+            mountainComplete.setUpdate();
+            return true;
+        }
 
-        return !isSameDay(mountainComplete.getCreateAt());
+        return false;
     }
 
-    private static boolean isSameDay(Date date) {
+    public boolean checkToday(MountainComplete mountainComplete) {
+        boolean isCreateDay = isSameDay(mountainComplete.getCreateAt());
+        boolean isLastDay = false;
+
+        if (mountainComplete.getUpdateAt() != null) {
+            isLastDay = isSameDay(mountainComplete.getUpdateAt());
+        }
+
+        return isCreateDay || isLastDay;
+    }
+
+    private boolean isSameDay(Date date) {
         Date now = new Date();
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
@@ -56,5 +71,9 @@ public class MountainCompleteService {
         return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
                 cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
                 cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public MountainComplete findByMountainIdAndMemberId(Long mountainId, Long memberId) {
+        return mountainCompleteRepository.findByMountainIdAndMemberId(mountainId, memberId);
     }
 }

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Immutable;
+import site.ssanta.santa.api.mountain_complete.domain.MountainComplete;
 import site.ssanta.santa.api.mountain_like.domain.MountainLike;
 
 import java.util.List;

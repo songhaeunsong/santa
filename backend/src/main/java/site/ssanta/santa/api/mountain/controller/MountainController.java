@@ -19,6 +19,7 @@ import site.ssanta.santa.api.mountain.domain.Mountain;
 import site.ssanta.santa.api.mountain.domain.MountainPath;
 import site.ssanta.santa.api.mountain.domain.MountainSpot;
 import site.ssanta.santa.api.mountain.dto.*;
+import site.ssanta.santa.api.mountain.service.MountainRAGService;
 import site.ssanta.santa.api.mountain.service.MountainService;
 import site.ssanta.santa.api.mountain.util.MountainExpCalculator;
 import site.ssanta.santa.api.mountain_complete.domain.MountainComplete;
@@ -43,7 +44,7 @@ public class MountainController {
     private final MemberService memberService;
     private final MountainLikeService mountainLikeService;
     private final MountainCompleteService mountainCompleteService;
-//    private final MountainRAGService mountainRAGService;
+    private final MountainRAGService mountainRAGService;
     private final MountainExpCalculator expCalculator;
     private final JwtUtil jwtUtil;
     private final GroupParticipantService groupParticipantService;
@@ -206,9 +207,9 @@ public class MountainController {
         return ResponseEntity.created(null).body(response);
     }
 
-//    @PostMapping("/recommend")
-//    public ResponseEntity<RouteRecommendation> recommendRoute(@RequestBody RouteRequest request) {
-//        return ResponseEntity.ok()
-//                        .body(mountainRAGService.recommendRoute(request));
-//    }
+    @PostMapping("/recommend")
+    public ResponseEntity<?> recommendRoute(@RequestBody RouteRequest request) {
+        return ResponseEntity.ok()
+                        .body(mountainRAGService.recommendRoute(request));
+    }
 }

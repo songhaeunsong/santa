@@ -43,3 +43,4 @@ out/
 **/resources/database-local.properties
 **/resources/database-stage.properties
 **/resources/oauth.properties
+**/resources/embedding/mountain_embeddings.json

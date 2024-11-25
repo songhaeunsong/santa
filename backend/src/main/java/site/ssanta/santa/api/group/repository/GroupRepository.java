@@ -11,5 +11,5 @@ public interface GroupRepository extends JpaRepository<Group, Long> {
 
     List<GroupVO> findAllBy();
     Optional<GroupVO> findProjectsById(Long id);
-    List<GroupVO> findAllByOrderByExpDescCreateAtDesc();
+    List<GroupVO> findAllByOrderByExpDescCountOfMembersAscCreateAtDesc();
 }

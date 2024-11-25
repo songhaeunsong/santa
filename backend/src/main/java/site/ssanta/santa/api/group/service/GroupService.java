@@ -60,6 +60,6 @@ public class GroupService {
 
     @Transactional(readOnly = true)
     public List<GroupVO> getGroupRank() {
-        return groupRepository.findAllByOrderByExpDescCreateAtDesc();
+        return groupRepository.findAllByOrderByExpDescCountOfMembersAscCreateAtDesc();
     }
 }

@@ -42,6 +42,6 @@ public class Group {
     }
 
     public void updateExp(int exp) {
-        this.exp += exp;
+        this.exp += exp / this.countOfMembers;
     }
 }

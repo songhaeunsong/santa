@@ -1,4 +1,4 @@
-package site.ssanta.santa.api.mountain.dto;
+package site.ssanta.santa.api.mountain.dto.open_ai;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

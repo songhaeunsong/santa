@@ -1,10 +1,10 @@
-package site.ssanta.santa.api.mountain.dto;
+package site.ssanta.santa.api.mountain.dto.open_ai;
 
 import lombok.Getter;
 
 @Getter
 public class RouteRequest {
 
-    private UserLocation userLocation;
+    private Long mountainCode;
     private String difficulty;
 }

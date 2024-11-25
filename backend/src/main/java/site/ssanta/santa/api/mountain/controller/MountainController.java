@@ -19,6 +19,9 @@ import site.ssanta.santa.api.mountain.domain.Mountain;
 import site.ssanta.santa.api.mountain.domain.MountainPath;
 import site.ssanta.santa.api.mountain.domain.MountainSpot;
 import site.ssanta.santa.api.mountain.dto.*;
+import site.ssanta.santa.api.mountain.dto.open_ai.MountainRecommendationDto;
+import site.ssanta.santa.api.mountain.dto.open_ai.RouteRecommendation;
+import site.ssanta.santa.api.mountain.dto.open_ai.RouteRequest;
 import site.ssanta.santa.api.mountain.service.MountainRAGService;
 import site.ssanta.santa.api.mountain.service.MountainService;
 import site.ssanta.santa.api.mountain.util.MountainExpCalculator;
@@ -208,8 +211,22 @@ public class MountainController {
     }
 
     @PostMapping("/recommend")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 성공",
+                    content = @Content(schema = @Schema(implementation = MountainRecommendationDto.class))),
+    })
     public ResponseEntity<?> recommendRoute(@RequestBody RouteRequest request) {
+        RouteRecommendation recommendation = mountainRAGService.recommendRoute(request.getMountainCode(),
+                request.getDifficulty());
+
+        MountainRecommendationDto dto = MountainRecommendationDto.builder()
+                .path(recommendation.getRelevantPaths().stream()
+                        .map(relevantPath -> relevantPath.getPathData().getGeometry())
+                        .toList())
+                .recommendation(recommendation.getRecommendation())
+                .build();
+
         return ResponseEntity.ok()
-                        .body(mountainRAGService.recommendRoute(request));
+                        .body(dto);
     }
 }

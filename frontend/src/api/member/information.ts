@@ -1,24 +1,37 @@
 import { useQuery } from '@tanstack/vue-query';
 import apiClient from '../apiClient';
-import { Member } from '../../types/types';
+import { Member, MemberDetail, MountainLikes } from '../../types/types';
 
 const getMemberInformation = () =>
   apiClient.get<Member>('member/mypage').then(res => res.data);
 
-export const useGetMemberImpormation = () => {
+export const useGetMemberInformation = () => {
   return useQuery({
-    queryKey: ['memberInformation'],
+    queryKey: ['myInformation'],
     queryFn: () => getMemberInformation(),
     staleTime: 1000 * 60 * 10
   });
 };
 
+const getOtherMemberInformation = (id: string) =>
+  apiClient
+    .get<MemberDetail>('member/profile', { params: { id } })
+    .then(res => res.data);
+
+export const useGetOtherMemberInformation = (memberId: string) => {
+  return useQuery({
+    queryKey: ['memberInformation'],
+    queryFn: () => getOtherMemberInformation(memberId),
+    staleTime: 0
+  });
+};
+
 const getMemberMountainLike = () =>
-  apiClient.get('member/like').then(res => res.data);
+  apiClient.get<MountainLikes>('member/like').then(res => res.data);
 
 export const useGetMemberMountainLike = () =>
   useQuery({
     queryKey: ['mountainsLiked'],
     queryFn: () => getMemberMountainLike(),
-    staleTime: 1000 * 60 * 1
+    staleTime: 0
   });

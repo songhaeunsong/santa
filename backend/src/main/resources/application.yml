@@ -11,9 +11,6 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB.URL}
-  jpa:
-    properties:
-      hibernate.hibernate.default_batch_fetch_size: 100
 
 mybatis:
   mapper-locations: classpath:mappers/**/*.xml

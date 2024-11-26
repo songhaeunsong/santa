@@ -34,55 +34,64 @@ const handleRegister = () => {
   <Dialog>
     <DialogTrigger as-child>
       <Button
-        variant="outline"
-        class="bg-santaGreen hover:bg-santaLightGreen text-santaWhite"
-        >등록</Button
-      >
+        class="bg-santaFreshGreen hover:bg-santaFreshGreen text-white font-medium px-6 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+        그룹 등록
+      </Button>
     </DialogTrigger>
-    <DialogContent class="sm:max-w-[425px] bg-santaWhite">
-      <DialogHeader>
-        <DialogTitle class="text-santaGreen">그룹 등록</DialogTitle>
-        <DialogDescription class="text-santaLightGreen">
-          생성할 그룹의 이름과 소개글을 적어주세요!
+
+    <DialogContent
+      class="sm:max-w-[500px] bg-white rounded-xl shadow-xl transform transition-all">
+      <DialogHeader class="mb-6 space-y-3">
+        <DialogTitle
+          class="text-2xl font-bold text-santaFreshGreen bg-clip-text">
+          새로운 그룹 만들기
+        </DialogTitle>
+        <DialogDescription class="text-base text-gray-500">
+          등산을 함께 할 그룹을 만들어보세요!
         </DialogDescription>
       </DialogHeader>
-      <div class="grid gap-4 py-4">
-        <div class="grid items-center grid-cols-5 gap-4">
+
+      <div class="space-y-6">
+        <div class="space-y-2">
           <label
             for="name"
-            class="text-right text-santa-black">
+            class="block text-sm font-medium text-gray-700">
             그룹명
           </label>
           <input
             id="name"
             v-model="input.name"
-            placeholder="싸피 15반"
+            placeholder="예: 싸피 15반"
             required
-            class="col-span-4 px-4 py-2 placeholder-gray-200 border rounded" />
+            class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-santaFreshGreen transition-all duration-200 placeholder-gray-400 text-gray-800" />
         </div>
-        <div class="grid items-center grid-cols-5 gap-4">
+
+        <div class="space-y-2">
           <label
-            for="username"
-            class="text-right">
+            for="description"
+            class="block text-sm font-medium text-gray-700">
             소개글
           </label>
           <textarea
-            id="username"
+            id="description"
             v-model="input.description"
-            placeholder="싸피 서울 캠퍼스 15반의 등산 모임입니다."
+            placeholder="그룹에 대해 소개해주세요"
             rows="4"
             required
-            class="col-span-4 px-4 py-2 placeholder-gray-200 border rounded"></textarea>
+            class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-santaFreshGreen transition-all duration-200 placeholder-gray-400 text-gray-800 resize-none"></textarea>
         </div>
       </div>
-      <DialogFooter>
-        <Button
-          type="submit"
-          class="bg-santaGreen hover:bg-santaLightGreen text-santaWhite"
-          :disabled="!input.name"
-          @click="handleRegister">
-          <DialogClose>등록하기</DialogClose>
-        </Button>
+
+      <DialogFooter class="mt-8">
+        <DialogClose>
+          <Button
+            type="submit"
+            :disabled="!input.name"
+            @click="handleRegister"
+            class="w-full bg-santaFreshGreen hover:bg-santaFreshGreen text-white font-medium px-6 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5">
+            그룹 만들기
+          </Button>
+        </DialogClose>
       </DialogFooter>
     </DialogContent>
   </Dialog>

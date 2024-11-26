@@ -17,6 +17,7 @@
     "clsx": "^2.1.1",
     "embla-carousel-vue": "^8.3.1",
     "lucide-vue-next": "^0.454.0",
+    "pinia": "^2.2.6",
     "radix-vue": "^1.9.8",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
@@ -26,7 +27,6 @@
     "vue3-spinners": "^1.2.2"
   },
   "devDependencies": {
-    "@types/axios": "^0.9.36",
     "@types/vue-router": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^8.12.2",
     "@typescript-eslint/parser": "^8.12.2",

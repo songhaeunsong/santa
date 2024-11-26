@@ -7,6 +7,7 @@ import {
 } from '@tanstack/vue-query';
 import { router } from './router/router';
 import { useKakao } from 'vue3-kakao-maps/@utils';
+import { createPinia } from 'pinia';
 
 const queryClientOptions: VueQueryPluginOptions = {
   queryClientConfig: {
@@ -19,8 +20,11 @@ const queryClientOptions: VueQueryPluginOptions = {
   }
 };
 
+const pinia = createPinia();
+
 const app = createApp(App);
-useKakao('8df254404729491b295c2b935068e207');
+useKakao(`${import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY}`);
 app.use(VueQueryPlugin, queryClientOptions);
+app.use(pinia);
 app.use(router);
 app.mount('#app');

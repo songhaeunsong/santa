@@ -9,17 +9,16 @@ const isActive = getLoginStatus();
 <template>
   <div class="flex flex-col min-h-screen">
     <div
-      class="h-[60px] bg-santaIvory flex justify-between p-8 items-center text-deepGreen sticky top-0 z-10 shadow">
+      class="h-[60px] box-border bg-santaIvory flex justify-between p-8 items-center text-deepGreen sticky top-0 z-10 shadow">
       <router-link to="/">
         <span class="text-2xl font-bold">SANTA</span>
       </router-link>
-      <div class="flex items-center gap-1">
+      <div class="flex items-center gap-10">
         <CNNavigationMenu />
         <UserMenu v-if="isActive" />
         <router-link
           v-if="!isActive"
           to="/login"
-          class="ml-8"
           >로그인</router-link
         >
       </div>

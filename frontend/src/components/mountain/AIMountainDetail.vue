@@ -1,44 +1,17 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { useDeleteLiked, usePostLiked } from '../../api/mountain/liked';
-import { useGetMountainDetail } from '../../api/mountain/mountain';
 import { useRoute } from 'vue-router';
 import BaseLoading from '../BaseLoading.vue';
-import MountainCompletedModal from './MountainCompletedModal.vue';
-import Button from '../ui/button/Button.vue';
-import PathMap from '../map/PathMap.vue';
-import { usePostMountainRecommend } from '../../api/mountain/recommend';
+import { useGetMountainRecommend } from '../../api/mountain/recommend';
 
 const route = useRoute();
 const mountainCode = route.params.id as string;
-const isLiked = ref(false);
-
-// const {
-//   data: mountainDetailData,
-//   isError,
-//   isLoading,
-//   isFetching,
-//   refetch
-// } = useGetMountainDetail(mountainCode);
-
-const { mutateAsync: postMountainRecommend } = usePostMountainRecommend();
 
 const difficulty = '쉬움';
-const mountainDetailData = computed(() =>
-  postMountainRecommend({ mountainCode, difficulty }).then(res => {
-    return res.geometry.coordinates;
-  })
-);
 
-// watch(
-//   () => mountainDetailData.value,
-//   newData => {
-//     if (newData) {
-//       isLiked.value = newData.mountainInfo.isLiked || false;
-//     }
-//   },
-//   { immediate: true }
-// );
+const { data: mountainDetailData } = useGetMountainRecommend(
+  +mountainCode,
+  difficulty
+);
 </script>
 <template>
   <BaseLoading v-if="!mountainDetailData" />

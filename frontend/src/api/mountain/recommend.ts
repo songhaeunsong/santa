@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import apiClient from '../apiClient';
 
 interface Geometry {
@@ -9,22 +9,22 @@ interface Geometry {
 interface Response {
   geometry: Geometry;
 }
-const postMountainRecommend = (mountainCode: string, difficulty: string) =>
+const getMountainRecommend = (mountainCode: number, difficulty: string) =>
   apiClient
     .post<Response>('/mountain/recommend', {
-      mountainCode,
-      difficulty
+      params: {
+        mountainCode,
+        difficulty
+      }
     })
     .then(res => res.data);
 
-export const usePostMountainRecommend = () =>
-  useMutation({
-    mutationFn: ({
-      mountainCode,
-      difficulty
-    }: {
-      mountainCode: string;
-      difficulty: string;
-    }) => postMountainRecommend(mountainCode, difficulty),
-    onSuccess: () => {}
+export const useGetMountainRecommend = (
+  mountainCode: number,
+  difficulty: string
+) =>
+  useQuery({
+    queryKey: ['mountainRecommend'],
+    queryFn: () => getMountainRecommend(mountainCode, difficulty),
+    staleTime: 0
   });

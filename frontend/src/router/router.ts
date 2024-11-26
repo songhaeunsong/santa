@@ -16,6 +16,8 @@ import { useAuth } from '../hooks/useAuth';
 import { getLoginStatus } from '../utils/loginUtil';
 import MountainView from '../views/MountainView.vue';
 import MountainDetailView from '../views/MountainDetailView.vue';
+import MyInformationView from '../views/MyInformationView.vue';
+import AIMountainView from '../views/AIMountainView.vue';
 
 const routes: readonly RouteRecordRaw[] = [
   {
@@ -28,6 +30,12 @@ const routes: readonly RouteRecordRaw[] = [
     path: '/mountain',
     component: DefaultLayout,
     children: [{ path: '', component: MountainView }],
+    meta: { publicPath: false }
+  },
+  {
+    path: '/mountain/ai',
+    component: DefaultLayout,
+    children: [{ path: '', component: AIMountainView }],
     meta: { publicPath: false }
   },
   {
@@ -80,6 +88,12 @@ const routes: readonly RouteRecordRaw[] = [
   },
   {
     path: '/user',
+    component: DefaultLayout,
+    children: [{ path: '', component: MyInformationView }],
+    meta: { publicPath: false }
+  },
+  {
+    path: '/user/:id',
     component: DefaultLayout,
     children: [{ path: '', component: UserInformationView }],
     meta: { publicPath: false }

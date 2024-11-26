@@ -17,7 +17,7 @@ import { getLoginStatus } from '../utils/loginUtil';
 import MountainView from '../views/MountainView.vue';
 import MountainDetailView from '../views/MountainDetailView.vue';
 import MyInformationView from '../views/MyInformationView.vue';
-import AIMountainView from '../views/AIMountainView.vue';
+import AIMountainDetailView from '../views/AIMountainDetailView.vue';
 
 const routes: readonly RouteRecordRaw[] = [
   {
@@ -33,10 +33,10 @@ const routes: readonly RouteRecordRaw[] = [
     meta: { publicPath: false }
   },
   {
-    path: '/mountain/ai',
+    path: '/mountain/ai/:id',
     component: DefaultLayout,
-    children: [{ path: '', component: AIMountainView }],
-    meta: { publicPath: false }
+    children: [{ path: '', component: AIMountainDetailView }],
+    meta: { publicPath: true }
   },
   {
     path: '/mountain/:id',

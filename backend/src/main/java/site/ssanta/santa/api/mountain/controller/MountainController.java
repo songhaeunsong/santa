@@ -210,14 +210,15 @@ public class MountainController {
         return ResponseEntity.created(null).body(response);
     }
 
-    @PostMapping("/recommend")
+    @GetMapping("/recommend")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "조회 성공",
                     content = @Content(schema = @Schema(implementation = MountainRecommendationDto.class))),
     })
-    public ResponseEntity<?> recommendRoute(@RequestBody RouteRequest request) {
-        RouteRecommendation recommendation = mountainRAGService.recommendRoute(request.getMountainCode(),
-                request.getDifficulty());
+    public ResponseEntity<?> recommendRoute(@RequestParam("mountainCode") String mountainCode,
+                                            @RequestParam("difficulty") String difficulty) {
+        RouteRecommendation recommendation = mountainRAGService.recommendRoute(Long.parseLong(mountainCode),
+                difficulty);
 
         MountainRecommendationDto dto = MountainRecommendationDto.builder()
                 .path(recommendation.getRelevantPaths().stream()

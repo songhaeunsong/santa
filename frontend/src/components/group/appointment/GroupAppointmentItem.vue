@@ -8,7 +8,13 @@ import {
 } from '../../../api/appointment/appointment';
 
 const props = defineProps<{ appointment: Appointment; groupId: number }>();
-const appointmentDate = new Date(props.appointment.meetAt).toLocaleString();
+
+const date = new Date(props.appointment.meetAt);
+
+const formattedDate = `${date.getUTCFullYear()}. ${String(date.getUTCMonth() + 1).padStart(2, '0')}. ${String(date.getUTCDate()).padStart(2, '0')}. ${
+  date.getUTCHours() < 12 ? '오전' : '오후'
+} ${String(date.getUTCHours() % 12 || 12).padStart(2, '0')}:${String(date.getUTCMinutes()).padStart(2, '0')}`;
+
 const isMemberOfAppointment = ref(props.appointment.isMember);
 
 const { mutate: postAppointmentJoin } = usePostAppointmentJoin();
@@ -46,7 +52,7 @@ const handleCancelJoin = () => {
         <div class="text-xl font-bold">
           {{ props.appointment.mountainName }}
         </div>
-        <div>{{ appointmentDate }}</div>
+        <div>{{ formattedDate }}</div>
       </div>
       <div class="mt-auto mr-auto">
         <div class="flex-shrink-0 text-md">
@@ -64,7 +70,7 @@ const handleCancelJoin = () => {
         <div class="mt-auto ml-auto">
           <Button
             v-show="isMemberOfAppointment"
-            class="px-3 py-[1px] bg-santaGreen"
+            class="px-3 py-[1px] bg-santaGreen hover:bg-santaBlack"
             @click="handleCancelJoin"
             >불참하기</Button
           >

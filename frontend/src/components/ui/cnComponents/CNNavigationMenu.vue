@@ -36,7 +36,7 @@ const components: { title: string; route: string; description: string }[] = [
   <NavigationMenu>
     <NavigationMenuList>
       <NavigationMenuItem>
-        <NavigationMenuTrigger>menu</NavigationMenuTrigger>
+        <NavigationMenuTrigger>Menu</NavigationMenuTrigger>
         <NavigationMenuContent>
           <ul class="grid w-[300px] gap-3 p-4 md:grid-cols-1">
             <li
@@ -45,12 +45,12 @@ const components: { title: string; route: string; description: string }[] = [
               <NavigationMenuLink as-child>
                 <router-link
                   :to="component.route"
-                  class="block p-3 space-y-1 leading-none no-underline transition-colors rounded-md outline-none select-none hover:bg-santaIvory hover:text-accent-foreground focus:bg-santaIvory focus:text-accent-foreground">
+                  class="block p-3 space-y-1 leading-none no-underline transition-colors rounded-md outline-none select-none hover:bg-santaIvory focus:bg-santaIvory">
                   <div class="text-sm font-medium leading-none text-santaBlack">
                     {{ component.title }}
                   </div>
                   <p
-                    class="text-sm leading-snug line-clamp-2 text-muted-foreground text-santaLightGray">
+                    class="text-sm leading-snug line-clamp-2 text-santaLightGray">
                     {{ component.description }}
                   </p>
                 </router-link>

@@ -27,7 +27,7 @@ const handleLogout = () => {
               <NavigationMenuLink as-child>
                 <router-link
                   to="/user"
-                  class="block p-3 space-y-1 leading-none no-underline transition-colors rounded-md outline-none select-none text-santaBlack hover:bg-santaIvory hover:text-accent-foreground focus:text-accent-foreground">
+                  class="block p-3 space-y-1 leading-none no-underline transition-colors rounded-md outline-none select-none text-santaBlack hover:bg-santaIvory">
                   <div class="text-sm font-medium leading-none">내 정보</div>
                 </router-link>
               </NavigationMenuLink>
@@ -35,7 +35,7 @@ const handleLogout = () => {
             <li>
               <NavigationMenuLink as-child>
                 <div
-                  class="block p-3 space-y-1 text-sm font-medium leading-none no-underline transition-colors rounded-md outline-none select-none text-santaBlack hover:bg-santaIvory hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                  class="block p-3 space-y-1 text-sm font-medium leading-none no-underline transition-colors rounded-md outline-none select-none text-santaBlack hover:bg-santaIvory"
                   @click="handleLogout">
                   로그아웃
                 </div>

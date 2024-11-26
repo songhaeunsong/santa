@@ -5,10 +5,10 @@ import CarouselContent from '../../ui/carousel/CarouselContent.vue';
 import CarouselItem from '../../ui/carousel/CarouselItem.vue';
 import CarouselNext from '../../ui/carousel/CarouselNext.vue';
 import CarouselPrevious from '../../ui/carousel/CarouselPrevious.vue';
+import GroupAppointmentCalendar from './GroupAppointmentCalendar.vue';
+import GroupAppointmentCard from './GroupAppointmentCard.vue';
 import GroupAppointmentItem from './GroupAppointmentItem.vue';
 import GroupAppointmentRegisterModal from './GroupAppointmentRegisterModal.vue';
-// import GroupAppointmentCard from './GroupAppointmentCard.vue';
-// import GroupAppointmentCalendar from '../../ui/cnComponents/GroupAppointmentCalendar.vue';
 
 const props = defineProps<{ groupId: number; date: string }>();
 
@@ -19,9 +19,8 @@ const { data: appointmentData, isError } = useGetAppointmentList(
 </script>
 
 <template>
-  <!-- <div class="grid grid-cols-1 gap-4 lg:grid-cols-5"> -->
-  <!-- <GroupAppointmentCalendar class="lg:col-span-2" /> -->
-  <!-- <GroupAppointmentCard v-if="!isError && appointmentData" /> -->
+  <div class="flex gap-5"></div>
+
   <Carousel
     v-if="!isError && appointmentData"
     class="px-8"
@@ -43,7 +42,6 @@ const { data: appointmentData, isError } = useGetAppointmentList(
     <CarouselPrevious />
     <CarouselNext />
   </Carousel>
-  <!-- </div> -->
   <div class="flex justify-end">
     <GroupAppointmentRegisterModal :group-id="groupId" />
   </div>

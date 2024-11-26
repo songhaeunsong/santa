@@ -55,7 +55,8 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
           <CalendarGridRow>
             <CalendarHeadCell
               v-for="day in weekDays"
-              :key="day">
+              :key="day"
+              class="">
               {{ day }}
             </CalendarHeadCell>
           </CalendarGridRow>

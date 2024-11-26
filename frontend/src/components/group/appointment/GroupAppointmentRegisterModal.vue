@@ -38,13 +38,13 @@ const handleRegister = () => {
     <DialogTrigger as-child>
       <Button
         variant="outline"
-        class="bg-santaGreen hover:bg-santaLightGreen text-santaWhite"
-        >등록</Button
+        class="bg-santaGreen hover:bg-santaBlack hover:text-santaWhite text-santaWhite"
+        >일정 만들기</Button
       >
     </DialogTrigger>
     <DialogContent class="sm:max-w-[425px] bg-santaWhite">
       <DialogHeader>
-        <DialogTitle class="text-santaGreen">그룹 등록</DialogTitle>
+        <DialogTitle class="text-santaGreen">등산 일정 등록</DialogTitle>
         <DialogDescription class="text-santaLightGreen">
           생성할 그룹의 이름과 소개글을 적어주세요!
         </DialogDescription>

@@ -41,9 +41,9 @@ const handleJoin = () => {
       <DialogFooter>
         <Button
           type="submit"
-          class="bg-santaGreen hover:bg-santaBlack text-santaWhite"
+          class="bg-santaGreen hover:bg-santaBlack text-santaWhite hover:gb-santaBlack"
           @click="handleJoin">
-          <DialogClose>가입 신청하기</DialogClose>
+          <DialogClose class="w-full h-full">가입 신청하기</DialogClose>
         </Button>
       </DialogFooter>
     </DialogContent>

@@ -1,18 +1,10 @@
 <script setup lang="ts">
+import { useGetMemberInformation } from '../../api/member/information';
 import CNProgress from '../ui/cnComponents/CNProgress.vue';
 import MountainTab from './userMountain/MountainTab.vue';
-import { useGetOtherMemberInformation } from '../../api/member/information';
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import MountainCompleted from './userMountain/MountainCompleted.vue';
-import UserMountainCompleted from './userMountain/UserMountainCompleted.vue';
 
-const route = useRoute();
-const memberId = route.params.id as string;
-
-const { data: memberInformation, isError } =
-  useGetOtherMemberInformation(memberId);
-
+const { data: memberInformation, isError } = useGetMemberInformation();
 const isLoaded = ref(false);
 
 onMounted(() => {
@@ -100,22 +92,7 @@ onMounted(() => {
           isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         ]"
         class="w-full">
-        <div
-          v-if="memberInformation.isSelf"
-          :class="[
-            'transition-all duration-700 delay-300 transform',
-            isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          ]"
-          class="w-full">
-          <MountainTab />
-        </div>
-
-        <div
-          v-else
-          class="p-[30px] bg-santaWhite rounded-2xl">
-          <UserMountainCompleted
-            :mountain-completed-data="memberInformation.completes" />
-        </div>
+        <MountainTab />
       </div>
     </div>
   </div>

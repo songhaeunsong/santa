@@ -56,15 +56,24 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
         },
-        deepGreen: '#39593F',
-        santaWhite: '#FFFDF6',
-        santaIvory: '#F9F5E7',
-        santaLightGreen: '#99B39E',
-        santaGreen: '#435E49',
-        santaBlack: '#202721',
+        deepGreen: '#435147',
+        santaWhite: '#ffffff',
+        santaIvory: '#f6f7f0',
+        santaLightGreen: '#9ad3ac',
+        santaGreen: '#4d6d57',
+        santaFreshGreen: '#04a65d',
+        santaBlack: '#1a261e',
         errorRed: '#A02626',
         santaLightGray: '#B2B6B3',
-        santaProgressYellow: '#FFDF6F'
+        santaProgressGreen: '#04a65d',
+        santaGray: '#9eb0a2',
+        santaBeige: '#d8dcc3',
+        mountainEasy: '#6DAD2C',
+        mountainMedium: '#FFAC30',
+        mountainHard: '#f25050',
+        rankGold: '#F7CF05',
+        rankBronze: '#DD905B',
+        rankSilver: '#BFBFBF'
       },
       borderRadius: {
         xl: 'calc(var(--radius) + 4px)',
@@ -95,6 +104,13 @@ export default {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'collapsible-down': 'collapsible-down 0.2s ease-in-out',
         'collapsible-up': 'collapsible-up 0.2s ease-in-out'
+      },
+      scrollbar: {
+        none: {
+          '&::-webkit-scrollbar': { display: 'none' },
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none'
+        }
       }
     }
   },

@@ -38,7 +38,8 @@ export default [
         'warn',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
       ],
-      '@typescript-eslint/no-unused-vars': 'warn'
+      '@typescript-eslint/no-unused-vars': 'warn',
+      kakao: 'readonly'
     }
   }
 ];

@@ -1,14 +1,7 @@
-<script setup>
-import { computed } from 'vue';
-import { useGetMountainCompleted } from '../../../api/mountain/mountain';
+<script setup lang="ts">
+import { Complete } from '../../../types/types';
 
-const { data: mountainCompletedData, isError } = useGetMountainCompleted();
-
-const hasCompletedMountains = computed(
-  () =>
-    mountainCompletedData?.completes &&
-    mountainCompletedData.completes.length > 0
-);
+const props = defineProps<{ mountainCompletedData: Complete[] }>();
 </script>
 
 <template v-if="!isError">
@@ -19,14 +12,13 @@ const hasCompletedMountains = computed(
       </div>
       <div
         class="flex items-center justify-center w-8 h-8 font-bold text-white rounded-full text-md bg-santaFreshGreen">
-        {{ mountainCompletedData?.completes.length || 0 }}
+        {{ props.mountainCompletedData.length || 0 }}
       </div>
     </div>
 
     <div
-      v-if="!mountainCompletedData?.completes"
+      v-if="!props.mountainCompletedData.length"
       class="flex flex-col items-center justify-center py-12">
-      <!-- 빈 상태 도장 -->
       <div class="relative w-32 h-32 mb-6 opacity-40">
         <div class="relative aspect-square">
           <div
@@ -71,7 +63,6 @@ const hasCompletedMountains = computed(
           </div>
         </div>
       </div>
-      <!-- 빈 상태 메시지 -->
       <p class="text-lg font-medium text-santaGreen">
         아직 완등한 산이 없어요!
       </p>
@@ -84,10 +75,9 @@ const hasCompletedMountains = computed(
       v-else
       class="grid grid-cols-3 gap-6 sm:grid-cols-4 lg:grid-cols-6">
       <div
-        v-for="complete in mountainCompletedData?.completes"
+        v-for="complete in props.mountainCompletedData"
         :key="complete.id"
         class="relative group">
-        <!-- 기존 도장 컴포넌트 내용 -->
         <div class="relative aspect-square">
           <div
             class="absolute inset-0 flex flex-col items-center justify-center transition-all duration-300 rounded-full hover:bg-santaGreen/50">
@@ -181,7 +171,7 @@ const hasCompletedMountains = computed(
         </div>
 
         <div
-          class="absolute w-full h-full transition-opacity duration-300 rounded-full opacity-0 -bottom-1 -right-1 bg-santaLightGreen/10 blur-sm group-hover:opacity-100" />
+          class="absolute w-full h-full transition-opacity duration-300 rounded-full opacity-0 -bottom-1 -right-1 bg-santaLightGreen/10 blur-sm group-hover:opacity-100"></div>
       </div>
     </div>
   </div>

@@ -11,7 +11,7 @@ const getAppointmentList = async (groupId: number, date: string) =>
 
 export const useGetAppointmentList = (groupId: number, date: string) =>
   useQuery({
-    queryKey: ['appointments', groupId, date],
+    queryKey: ['appointments'],
     queryFn: () => getAppointmentList(groupId, date),
     enabled: !!groupId && !!date,
     staleTime: 1000 * 60 * 1
@@ -53,9 +53,9 @@ export const usePostAppointmentJoin = () => {
       groupId: number;
       appointmentId: number;
     }) => postAppointmentJoin(groupId, appointmentId),
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['appointments', variables.appointmentId]
+        queryKey: ['appointments']
       });
     }
   });
@@ -70,9 +70,9 @@ export const usePostAppointmentCancelJoin = () => {
   return useMutation({
     mutationFn: (appointmentId: number) =>
       postAppointmentCancelJoin(appointmentId),
-    onSuccess: (_, appointmentId) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['appointments', appointmentId]
+        queryKey: ['appointments']
       });
     }
   });

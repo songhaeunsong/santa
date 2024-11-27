@@ -12,6 +12,7 @@ import site.ssanta.santa.common.jwt.exception.JWTErrorCode;
 import site.ssanta.santa.common.jwt.exception.MemberNotFoundException;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -79,5 +80,29 @@ public class MemberService {
     public CheckNicknameResponseDto checkNickname(String nickname) {
         boolean result = memberRepository.existsMemberByNicknameEqualsIgnoreCase(nickname);
         return new CheckNicknameResponseDto(result);
+    }
+
+    @Transactional(readOnly = true)
+    public Member getMemberById(Long userId) {
+        return memberRepository.findById(userId)
+                .orElseThrow();
+    }
+
+    public Member getMountainLikes(Long userId) {
+        return memberRepository.findWithMountainLikesById(userId);
+    }
+
+    @Transactional
+    public void updateExp(Member member, int exp) {
+        member.updateExp(exp);
+    }
+
+    @Transactional(readOnly = true)
+    public List<MemberInfoVO> getMemberRank() {
+        return memberRepository.findAllByOrderByTierDescExpDesc();
+    }
+
+    public Member findWithCompletesById(Long userId) {
+        return memberRepository.findWithMountainCompletesById(userId);
     }
 }

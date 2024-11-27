@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.ssanta.santa.api.mountain_like.repository.MountainLikeMapper">
+    <select id="existsByMemberIdAndMountainId" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM mountain_likes
+            WHERE member_id = #{memberId}
+            AND mountain_id = #{mountainId}
+            LIMIT 1
+        ) as exists_flag
+    </select>
+
+    <delete id="deleteByMemberIdAndMountainId">
+        DELETE
+        FROM mountain_likes
+        WHERE member_id = #{memberId}
+        AND mountain_id = #{mountainId}
+    </delete>
+</mapper>

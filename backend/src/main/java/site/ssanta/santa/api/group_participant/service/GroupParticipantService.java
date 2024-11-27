@@ -30,4 +30,8 @@ public class GroupParticipantService {
                 .memberId(userId)
                 .build());
     }
+
+    public List<GroupParticipant> findAllByMemberId(Long memberId) {
+        return groupParticipantRepository.findAllByMemberId(memberId);
+    }
 }

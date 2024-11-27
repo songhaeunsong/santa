@@ -8,7 +8,7 @@ export const useGetgroupAll = () =>
   useQuery({
     queryKey: ['groups'],
     queryFn: () => getGroupAll(),
-    staleTime: 1000 * 60 * 2
+    staleTime: 0
   });
 
 const getGroupDetail = async (id: string) =>
@@ -18,7 +18,7 @@ export const useGetgroupDetail = (groupId: string) =>
   useQuery({
     queryKey: ['group', groupId],
     queryFn: ({ queryKey }) => getGroupDetail(queryKey[1] as string),
-    staleTime: 1000 * 60 * 1
+    staleTime: 0
   });
 
 interface postGroupResponse {
@@ -63,6 +63,7 @@ export const usePostGroupJoin = () => {
       return postGroupJoin(groupId);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['groups'] });
       queryClient.invalidateQueries({ queryKey: ['group'] });
     },
     onError: error => {

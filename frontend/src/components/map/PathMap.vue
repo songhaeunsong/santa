@@ -47,7 +47,7 @@ const map = ref<kakao.maps.Map | null>(null);
 const mapConfig = ref({
   lat: 37.566826,
   lng: 126.9786567,
-  zoom: 5
+  zoom: 6
 });
 
 const markers = computed(() => {
@@ -130,7 +130,7 @@ const onLoadKakaoMap = (mapRef: kakao.maps.Map) => {
 
     [mapConfig.value.lat, mapConfig.value.lng] =
       props.pathData[0].geometry.coordinates[0][0].map(Number);
-    mapConfig.value.zoom = 8;
+    mapConfig.value.zoom = 6;
   }
 };
 

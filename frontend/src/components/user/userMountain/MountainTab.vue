@@ -19,7 +19,7 @@ import Tabs from '../../ui/tabs/Tabs.vue';
       </TabsTrigger>
       <TabsTrigger value="like"> 관심 </TabsTrigger>
     </TabsList>
-    <div class="p-[30px] bg-santaWhite rounded-b-2xl">
+    <div class="p-[30px] bg-santaWhite rounded-b-2xl min-h-[38vh]">
       <TabsContent value="completed"> <MountainCompleted /> </TabsContent>
       <TabsContent value="like"> <MountainLike /> </TabsContent>
     </div>

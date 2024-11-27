@@ -45,43 +45,73 @@ const handleCancelJoin = () => {
 </script>
 
 <template>
-  <div>
+  <div class="group">
     <div
-      class="lg:min-w-[380px] md:min-w-[300px] sm:min-w-[250px] p-4 rounded-lg border grid grid-rows-3">
-      <div class="flex justify-between">
-        <div class="text-xl font-bold">
-          {{ props.appointment.mountainName }}
+      class="lg:min-w-[380px] md:min-w-[300px] sm:min-w-[250px] p-6 rounded-xl border border-santaLightGreen/20 bg-white hover:shadow-lg transition-all duration-300">
+      <div class="flex items-start justify-between mb-5">
+        <div class="flex items-center gap-2">
+          <h3 class="text-xl font-bold text-santaGreen">
+            {{ props.appointment.mountainName }}
+          </h3>
         </div>
-        <div>{{ formattedDate }}</div>
-      </div>
-      <div class="mt-auto mr-auto">
-        <div class="flex-shrink-0 text-md">
-          {{ props.appointment.countOfMembers }}명
+        <div
+          class="flex items-center px-3 py-1 text-sm rounded-lg bg-santaLightGreen/10 text-santaGreen">
+          {{ formattedDate }}
         </div>
       </div>
-      <div class="flex gap-3">
-        <div class="flex flex-wrap items-center gap-1 text-xs">
+
+      <div class="flex items-center gap-2 mb-4">
+        <svg
+          class="w-5 h-5 text-santaGreen/70"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle
+            cx="9"
+            cy="7"
+            r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        <span class="font-medium text-santaGreen">
+          {{ props.appointment.countOfMembers }}명 참여중
+        </span>
+      </div>
+
+      <div class="flex items-end justify-between">
+        <div class="flex flex-wrap gap-2">
           <span
             v-for="member in props.appointment.members"
-            class="text-santaGreen"
-            >{{ member.name }}</span
-          >
+            :key="member.name"
+            class="px-2.5 py-1 text-xs font-medium bg-santaLightGreen/10 text-santaGreen rounded-full">
+            {{ member.name }}
+          </span>
         </div>
-        <div class="mt-auto ml-auto">
+
+        <div>
           <Button
-            v-show="isMemberOfAppointment"
-            class="px-3 py-[1px] bg-santaGreen hover:bg-santaBlack"
+            v-if="isMemberOfAppointment"
             @click="handleCancelJoin"
-            >불참하기</Button
-          >
+            class="px-4 py-2 text-sm font-medium text-white transition-colors duration-300 border rounded-lg bg-deepGreen hover:bg- hover:text-white">
+            불참하기
+          </Button>
+
           <Button
-            v-show="!isMemberOfAppointment"
-            class="px-3 py-[1px] bg-santaGreen"
+            v-else
             @click="handleJoin"
-            >참여하기</Button
-          >
+            class="px-4 py-2 text-sm font-medium text-white transition-colors duration-300 rounded-lg bg-santaFreshGreen hover:bg-santaGreen">
+            참여하기
+          </Button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.group:hover {
+  transform: translateY(-2px);
+}
+</style>

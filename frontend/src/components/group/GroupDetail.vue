@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { useGetgroupDetail } from '../../api/group/group';
 import { onMounted, ref } from 'vue';
-import GroupMemberLink from './GroupMemberLink.vue';
 import GroupAppointment from './appointment/GroupAppointment.vue';
 import BaseLoading from '../BaseLoading.vue';
-import BaseTag from '../BaseTag.vue';
 import GroupJoinModal from './GroupJoinModal.vue';
-import GroupAppointmentCalendar from './appointment/GroupAppointmentCalendar.vue';
 
 const props = defineProps<{ id: string }>();
 const { data: groupDetail, isError } = useGetgroupDetail(props.id);
@@ -22,10 +19,9 @@ onMounted(() => {
 <template>
   <div
     v-if="!isError && groupDetail"
-    class="w-full min-h-screen bg-gradient-to-br from-santaIvory to-santaBeige">
+    class="w-full min-h-screen">
     <div
       class="flex flex-col w-full max-w-6xl gap-6 px-4 py-8 mx-auto lg:px-6 md:px-4 sm:px-4">
-      <!-- Header Section -->
       <div
         :class="[
           'transition-all duration-700 transform',
@@ -33,25 +29,7 @@ onMounted(() => {
         ]"
         class="flex items-center justify-between px-6 py-4 shadow-lg bg-santaWhite rounded-xl">
         <div class="flex items-center gap-4">
-          <svg
-            class="w-8 h-8 text-santaFreshGreen"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor">
-            <path
-              d="M17 7l-5 5-5-5"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round">
-              <animate
-                attributeName="d"
-                dur="1.5s"
-                repeatCount="indefinite"
-                values="M17 7l-5 5-5-5;M17 12l-5 5-5-5;M17 7l-5 5-5-5" />
-            </path>
-          </svg>
-          <h1
-            class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-santaGreen to-santaFreshGreen">
+          <h1 class="text-2xl font-bold text-deepGreen">
             {{ groupDetail.name }}
           </h1>
         </div>
@@ -68,93 +46,130 @@ onMounted(() => {
           isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
         ]"
         class="relative flex flex-col w-full gap-8 p-8 overflow-hidden shadow-lg bg-santaWhite rounded-xl">
-        <div class="absolute top-0 right-0 w-64 h-64 opacity-5">
-          <svg
-            viewBox="0 0 100 100"
-            class="w-full h-full">
-            <circle
-              cx="50"
-              cy="50"
-              r="40"
-              fill="none"
-              stroke="#435147"
-              stroke-width="0.5">
-              <animate
-                attributeName="r"
-                from="30"
-                to="50"
-                dur="3s"
-                repeatCount="indefinite" />
-              <animate
-                attributeName="opacity"
-                from="0.5"
-                to="0"
-                dur="3s"
-                repeatCount="indefinite" />
-            </circle>
-          </svg>
+        <div class="flex flex-col h-full">
+          <div class="flex items-center gap-3 mb-6">
+            <div
+              class="flex items-center justify-center w-12 h-12 rounded-full bg-santaFreshGreen/10">
+              <svg
+                class="w-6 h-6 text-santaFreshGreen"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <path
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <h2 class="text-xl font-bold text-santaGreen">소개</h2>
+          </div>
+          <p class="flex-grow text-lg leading-relaxed text-santaGray">
+            {{ groupDetail.description }}
+          </p>
         </div>
 
-        <li class="flex items-center gap-4 group">
-          <BaseTag
-            tag-label="소개"
-            class="transition-transform group-hover:scale-105" />
-          <span class="text-lg text-santaGray">{{
-            groupDetail.description
-          }}</span>
-        </li>
-
-        <li class="flex items-center gap-4 group">
-          <BaseTag
-            tag-label="그룹장"
-            class="transition-transform group-hover:scale-105" />
-          <GroupMemberLink
-            :id="groupDetail.adminId"
-            :participant="groupDetail.adminName"
-            class="transition-colors hover:text-santaFreshGreen" />
-        </li>
-
-        <li class="flex items-start gap-4 group">
-          <BaseTag
-            tag-label="멤버"
-            class="transition-transform group-hover:scale-105" />
-          <div class="flex-1">
-            <div class="mb-3 text-lg font-bold text-deepGreen">
-              {{ groupDetail.countOfMembers }} 명
+        <div class="grid grid-cols-3 gap-5">
+          <div class="transition-all duration-300 bg-white">
+            <div class="flex flex-col h-full">
+              <div class="flex items-center gap-3 mb-6">
+                <div
+                  class="flex items-center justify-center w-12 h-12 rounded-full bg-santaFreshGreen/10">
+                  <svg
+                    class="w-6 h-6 text-santaFreshGreen"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2">
+                    <path
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </div>
+                <h2 class="text-xl font-bold text-santaGreen">그룹장</h2>
+              </div>
+              <div class="flex items-center flex-grow gap-4">
+                <div
+                  class="flex items-center gap-4 p-4 bg-santaFreshGreen/5 rounded-xl">
+                  <div>
+                    <div class="text-lg font-bold text-santaGreen">
+                      {{ groupDetail.adminName }}
+                    </div>
+                    <div class="text-sm text-santaGray">그룹 리더</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="flex flex-wrap gap-3">
-              <GroupMemberLink
+          </div>
+
+          <div class="flex flex-col h-full">
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <div
+                  class="flex items-center justify-center w-12 h-12 rounded-full bg-santaFreshGreen/10">
+                  <svg
+                    class="w-6 h-6 text-santaFreshGreen"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2">
+                    <path
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <div class="flex items-center gap-3">
+                  <h2 class="text-xl font-bold text-santaGreen">멤버</h2>
+                  <span
+                    class="px-3 py-1 font-bold rounded-full bg-santaFreshGreen/10 text-santaFreshGreen">
+                    {{ groupDetail.countOfMembers }}명
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <div
                 v-for="participant in groupDetail.participants"
                 :key="participant.memberId"
-                :id="participant.memberId"
-                :participant="participant.nickname"
-                class="transition-all hover:text-santaFreshGreen hover:-translate-y-0.5" />
+                class="px-2 py-1 border bg-santaLightGreen/5 rounded-full text-santaGreen hover:bg-santaFreshGreen/10 hover:-translate-y-0.5 transition-all duration-300 cursor-pointer">
+                {{ participant.nickname }}
+              </div>
             </div>
           </div>
-        </li>
+        </div>
 
-        <li class="flex items-center gap-4 group">
-          <BaseTag
-            tag-label="경험치"
-            class="transition-transform group-hover:scale-105" />
-          <div class="text-lg font-bold text-deepGreen">
-            {{ groupDetail.exp }}
-            <span class="ml-2 text-sm text-santaGray">XP</span>
+        <div class="flex flex-col h-full">
+          <div class="flex items-center gap-3 mb-6">
+            <div
+              class="flex items-center justify-center w-12 h-12 rounded-full bg-santaFreshGreen/10">
+              <svg
+                class="w-6 h-6 text-santaFreshGreen"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2">
+                <path d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h2 class="text-xl font-bold text-santaGreen">경험치</h2>
           </div>
-        </li>
+          <div class="flex-grow">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-3xl font-bold text-santaFreshGreen">{{
+                groupDetail.exp
+              }}</span>
+              <span class="text-lg font-medium text-santaGray">EXP</span>
+            </div>
+            <div
+              class="w-full h-3 overflow-hidden rounded-full bg-santaLightGreen/20">
+              <div
+                class="h-full transition-all duration-1000 rounded-full bg-gradient-to-r from-santaGreen to-santaFreshGreen"
+                :style="{ width: `${(groupDetail.exp % 1000) / 10}%` }"></div>
+            </div>
+          </div>
+        </div>
 
         <div class="pt-6 border-t border-santaLightGray/30">
-          <li class="flex items-center gap-4 mb-6 group">
-            <BaseTag
-              tag-label="등산 약속"
-              class="transition-transform group-hover:scale-105" />
-          </li>
-          <GroupAppointmentCalendar
-            :group-id="groupDetail.id"
-            date="2024-11-30"
-            class="mb-6" />
+          <h2 class="text-xl font-bold text-santaGreen">등산 약속</h2>
+
           <GroupAppointment
-            :group-id="groupDetail.id"
+            :group-detail="groupDetail"
             date="2024-11-30" />
         </div>
       </ul>

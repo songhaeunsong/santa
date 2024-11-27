@@ -38,7 +38,7 @@ const handleRegister = () => {
     <DialogTrigger as-child>
       <Button
         variant="outline"
-        class="bg-santaGreen hover:bg-santaBlack hover:text-santaWhite text-santaWhite"
+        class="rounded-lg bg-santaFreshGreen hover:bg-santaFreshGreen/80 hover:text-santaWhite text-santaWhite"
         >일정 만들기</Button
       >
     </DialogTrigger>

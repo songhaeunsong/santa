@@ -27,15 +27,15 @@ watch(
 
     if (
       newLocation.lat &&
-      (props.mountain.latitude + 0.03 < newLocation.lat ||
-        props.mountain.latitude - 0.03 > newLocation.lat)
+      (props.mountain.latitude + 0.02 < newLocation.lat ||
+        props.mountain.latitude - 0.02 > newLocation.lat)
     ) {
       isInMountain.value = false;
     }
     if (
       newLocation.lng &&
-      (props.mountain.longitude + 0.03 < newLocation.lng ||
-        props.mountain.longitude - 0.03 > newLocation.lng)
+      (props.mountain.longitude + 0.02 < newLocation.lng ||
+        props.mountain.longitude - 0.02 > newLocation.lng)
     ) {
       isInMountain.value = false;
     }
@@ -50,7 +50,7 @@ watch(
       );
     }
 
-    // accuracy.value = 96; //테스트용
+    // accuracy.value = 96; // 테스트용
     if (accuracy.value >= 95) {
       postMountainCompleted(props.mountain.id).then(data => {
         exp.value = data.exp;
@@ -62,7 +62,7 @@ watch(
 onMounted(() => {
   setTimeout(() => {
     showAnimation.value = false;
-  }, 4000);
+  }, 6000);
 });
 </script>
 
@@ -111,7 +111,34 @@ onMounted(() => {
         </div>
 
         <div
-          v-if="isInMountain && accuracy >= 95"
+          v-if="location.lat === null && location.lng === null"
+          class="flex flex-col items-center w-full gap-6 py-10">
+          <div
+            class="flex items-center justify-center w-24 h-24 rounded-full bg-santaIvory">
+            <svg
+              class="w-14 h-14 text-santaGray"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div class="flex flex-col items-center gap-6">
+            <p class="text-2xl font-bold text-santaFreshGreen">
+              위치 감지에 실패했습니다.
+            </p>
+            <span class="text-lg text-santaGray"
+              >위치 권한을 허용해주세요!</span
+            >
+          </div>
+        </div>
+
+        <div
+          v-else-if="isInMountain && accuracy >= 95"
           class="flex flex-col items-center w-full gap-6 py-10">
           <div class="flex flex-col items-center gap-6">
             <p class="text-4xl font-bold text-santaFreshGreen">
